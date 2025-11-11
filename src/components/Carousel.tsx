@@ -5,7 +5,7 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 import MediaCard from "./MediaCard";
-import { TMDBMedia } from "@/types/mediaTypes";
+import { TMDBMedia } from "@/types";
 
 interface CarouselProps {
   items: TMDBMedia[];

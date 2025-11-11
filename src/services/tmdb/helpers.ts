@@ -1,6 +1,7 @@
 // src/services/tmdb/helpers.ts
 
-import { TMDB_IMAGE_BASE_URL, TmdbImageSize } from "./config";
+import { TMDB_IMAGE_BASE_URL } from "./config";
+import { TmdbImageSize } from "@/types";
 
 /**
  * Genera la URL completa para una imagen de TMDB.

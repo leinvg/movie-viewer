@@ -4,9 +4,9 @@ import { fetchFromTMDB } from "./client";
 import {
   TMDBListResponse,
   TMDBMultiMedia,
-  TMDBMedia, // Usamos TMDBMedia (Movie | Tv) para el resultado final
+  TMDBMedia,
   TMDBPerson,
-} from "@/types/mediaTypes";
+} from "@/types";
 
 // Definimos el tipo de respuesta simplificado que se ajusta a tus necesidades.
 // Ya no es la respuesta paginada estándar de TMDB.

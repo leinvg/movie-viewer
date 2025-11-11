@@ -50,3 +50,11 @@ export interface TMDBListResponse<T> {
   total_pages: number;
   total_results: number;
 }
+
+/** Tamaños estándar de imagen soportados por TMDB. */
+export enum TmdbImageSize {
+  W300 = "w300",
+  W500 = "w500",
+  W780 = "w780",
+  Original = "original",
+}

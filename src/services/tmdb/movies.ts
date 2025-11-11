@@ -1,6 +1,6 @@
 // src/services/tmdb/tmdbMovies.ts
 import { fetchFromTMDB } from "./client";
-import { TMDBMovie, TMDBListResponse } from "@/types/mediaTypes";
+import { TMDBMovie, TMDBListResponse } from "@/types";
 
 /**
  * Devuelve las próximas películas a estrenarse.
@@ -49,5 +49,3 @@ export const getUpcomingMovies = async (limit: number = 20) => {
     total_results: validResults.length,
   } as TMDBListResponse<TMDBMovie>;
 };
-
-

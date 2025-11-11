@@ -1,8 +1,8 @@
 // src/components/MediaCard.tsx
 
 import Image from "next/image";
-import { TMDBMedia } from "@/types/mediaTypes";
-import { getImagePath, TmdbImageSize } from "@/services/tmdb";
+import { TMDBMedia, TmdbImageSize } from "@/types";
+import { getImagePath } from "@/services/tmdb";
 
 interface MediaCardProps {
   media: TMDBMedia;

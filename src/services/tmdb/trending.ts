@@ -1,10 +1,6 @@
 // src/services/tmdb/tmdbMovies.ts
 import { fetchFromTMDB } from "./client";
-import {
-  TMDBMultiMedia,
-  TMDBListResponse,
-  TMDBMedia,
-} from "@/types/mediaTypes";
+import { TMDBMultiMedia, TMDBListResponse, TMDBMedia } from "@/types";
 
 /**
  * Devuelve las tendencias del día (solo películas y series), combinando varias páginas.
