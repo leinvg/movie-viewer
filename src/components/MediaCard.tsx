@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { TMDBMedia } from "@/types/mediaTypes";
-import { getImagePath } from "@/services/tmdb";
+import { getImagePath, TmdbImageSize } from "@/services/tmdb";
 
 interface MediaCardProps {
   media: TMDBMedia;
@@ -11,7 +11,7 @@ interface MediaCardProps {
 /** Tarjeta visual de película o serie */
 export default function MediaCard({ media }: MediaCardProps) {
   const title = "title" in media ? media.title : media.name;
-  const img = getImagePath(media.poster_path, "w300");
+  const img = getImagePath(media.poster_path, TmdbImageSize.W300);
 
   return (
     <div className="aspect-[2/3] rounded-lg overflow-hidden bg-gray-800 relative">
