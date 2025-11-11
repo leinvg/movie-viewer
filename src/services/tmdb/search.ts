@@ -16,6 +16,8 @@ export interface SearchMediaResult {
   nextPage: number;
 }
 
+// comentario prueba
+
 /**
  * Busca medios (películas/series) en TMDB usando el endpoint 'multi'.
  * Expande resultados 'person' para incluir sus 'known_for'.
