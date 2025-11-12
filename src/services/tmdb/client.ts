@@ -15,7 +15,6 @@ export type RateLimitError = {
 
 /**
  * Realiza solicitudes GET tipadas a la API de TMDB.
- *
  * @param endpoint Ruta del recurso (e.g., "/movie/popular").
  * @returns Datos JSON de la respuesta.
  */

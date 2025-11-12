@@ -1,35 +1,41 @@
 // src/types/mediaTypes.ts
 
-/** Estructura base para películas y series. */
+/** Estructura compartida entre películas y series en TMDB. */
 export interface TMDBMediaBase {
-  id: number;
-  poster_path: string | null;
+  adult: boolean;
   backdrop_path: string | null;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
   overview: string;
-  vote_average: number;
   popularity: number;
+  poster_path: string | null;
+  vote_average: number;
+  vote_count: number;
 }
 
-/** Estructura para películas. */
+/** Estructura de datos de una película en TMDB. */
 export interface TMDBMovie extends TMDBMediaBase {
   title: string;
   original_title: string;
   release_date: string;
+  video: boolean;
   media_type: "movie";
 }
 
-/** Estructura para series. */
+/** Estructura de datos de una serie en TMDB. */
 export interface TMDBTv extends TMDBMediaBase {
   name: string;
   original_name: string;
   first_air_date: string;
+  origin_country: string[];
   media_type: "tv";
 }
 
-/** Tipo de unión para películas o series. */
+/** Tipo de unión para películas y series. */
 export type TMDBMedia = TMDBMovie | TMDBTv;
 
-/** Estructura para personas. */
+/** Estructura de datos de una persona en TMDB. */
 export interface TMDBPerson {
   id: number;
   name: string;
@@ -40,7 +46,7 @@ export interface TMDBPerson {
   media_type: "person";
 }
 
-/** Tipo de unión para películas, series o personas. */
+/** Tipo de unión para películas, series y personas. */
 export type TMDBMultiMedia = TMDBMedia | TMDBPerson;
 
 /** Estructura base para respuestas paginadas */
@@ -51,7 +57,7 @@ export interface TMDBListResponse<T> {
   total_results: number;
 }
 
-/** Tamaños estándar de imagen soportados por TMDB. */
+/** Tamaños predefinidos de imagen soportados por TMDB. */
 export enum TmdbImageSize {
   W300 = "w300",
   W500 = "w500",
