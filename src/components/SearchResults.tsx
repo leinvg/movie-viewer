@@ -1,3 +1,5 @@
+// src/components/SearchResults.tsx
+
 "use client";
 
 import { useState } from "react";
@@ -26,7 +28,9 @@ export default function SearchResults({
     if (!hasMore || loading) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(query)}&page=${nextPage}&limit=12`);
+      const res = await fetch(
+        `/api/search?q=${encodeURIComponent(query)}&page=${nextPage}&limit=12`
+      );
       if (!res.ok) throw new Error("Network error");
       const data = await res.json();
       setResults((cur) => [...cur, ...data.results]);

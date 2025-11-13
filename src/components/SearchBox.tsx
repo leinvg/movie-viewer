@@ -1,24 +1,26 @@
+// src/components/SearchBox.tsx
+
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function SearchBox() {
-  const [q, setQ] = useState("");
+  const [query, setQuery] = useState("");
   const router = useRouter();
 
-  const submit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = q.trim();
-    if (!trimmed) return;
-    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) return;
+    router.push(`/search?q=${encodeURIComponent(trimmedQuery)}`);
   };
 
   return (
-    <form onSubmit={submit} className="flex items-center gap-2">
+    <form onSubmit={handleSubmit} className="flex items-center gap-2">
       <input
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
         placeholder="Buscar películas o series"
         className="w-full rounded-lg px-4 py-3 bg-gray-900 text-white placeholder-gray-400 outline-none"
       />

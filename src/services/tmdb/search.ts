@@ -8,19 +8,12 @@ import {
   TMDBPerson,
 } from "@/types";
 
-/** Estructura de respuesta para búsqueda multi tipo. */
 export interface SearchMediaResult {
   results: TMDBMedia[];
   hasMore: boolean;
   nextPage: number;
 }
 
-/**
- * Busca películas y series en TMDB (multi endpoint).
- * @param query Texto de búsqueda
- * @param page Página inicial
- * @param limit Máximo de resultados
- */
 export async function searchMedia(
   query: string,
   page: number = 1,
@@ -75,4 +68,61 @@ export async function searchMedia(
     if (error.type === "RATE_LIMIT") throw error;
     throw new Error(`Error en búsqueda TMDB: ${error.message}`);
   }
+}
+
+/**
+ * Busca resultados filtrados según reglas del proyecto (ej. requiere poster, backdrop, géneros).
+ * Itera páginas de TMDB usando `searchMedia` hasta reunir `limit` items filtrados o alcanzar `maxPagesToScan`.
+ */
+export async function fetchFilteredSearch(
+  query: string,
+  page: number = 1,
+  limit: number = 20,
+  options?: {
+    requirePoster?: boolean;
+    requireBackdrop?: boolean;
+    requireGenres?: boolean;
+    maxPagesToScan?: number; // to avoid long loops
+  }
+): Promise<SearchMediaResult> {
+  const {
+    requirePoster = true,
+    requireBackdrop = true,
+    requireGenres = true,
+    maxPagesToScan = 5,
+  } = options || {};
+
+  if (!query.trim()) return { results: [], hasMore: false, nextPage: page };
+
+  const aggregated: SearchMediaResult = {
+    results: [],
+    hasMore: false,
+    nextPage: page,
+  };
+  let currentPage = page;
+  let scanned = 0;
+
+  while (aggregated.results.length < limit && scanned < maxPagesToScan) {
+    const chunk = await searchMedia(query, currentPage, limit);
+    const filtered = chunk.results.filter((m) => {
+      if (requirePoster && !m.poster_path) return false;
+      if (requireBackdrop && !m.backdrop_path) return false;
+      if (requireGenres) {
+        const g = (m as any).genre_ids;
+        if (!Array.isArray(g) || g.length === 0) return false;
+      }
+      return true;
+    });
+
+    aggregated.results.push(...filtered);
+    aggregated.hasMore = chunk.hasMore;
+    aggregated.nextPage = chunk.nextPage;
+
+    if (!chunk.hasMore) break;
+    currentPage = chunk.nextPage;
+    scanned++;
+  }
+
+  aggregated.results = aggregated.results.slice(0, limit);
+  return aggregated;
 }
