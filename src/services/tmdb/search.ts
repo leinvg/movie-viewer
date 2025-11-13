@@ -6,13 +6,8 @@ import {
   TMDBMultiMedia,
   TMDBMedia,
   TMDBPerson,
+  SearchMediaResult,
 } from "@/types";
-
-export interface SearchMediaResult {
-  results: TMDBMedia[];
-  hasMore: boolean;
-  nextPage: number;
-}
 
 export async function searchMedia(
   query: string,
@@ -70,10 +65,6 @@ export async function searchMedia(
   }
 }
 
-/**
- * Busca resultados filtrados según reglas del proyecto (ej. requiere poster, backdrop, géneros).
- * Itera páginas de TMDB usando `searchMedia` hasta reunir `limit` items filtrados o alcanzar `maxPagesToScan`.
- */
 export async function fetchFilteredSearch(
   query: string,
   page: number = 1,

@@ -2,7 +2,8 @@
 
 import SearchHeader from "@/components/SearchHeader";
 import SearchResults from "@/components/SearchResults";
-import { fetchFilteredSearch, SearchMediaResult } from "@/services/tmdb";
+import { fetchFilteredSearch } from "@/services/tmdb";
+import { SearchMediaResult } from "@/types";
 
 interface Props {
   searchParams: { q?: string };
