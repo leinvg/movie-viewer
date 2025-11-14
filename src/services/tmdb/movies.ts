@@ -3,6 +3,22 @@ import { fetchFromTMDB } from "./client";
 import { TMDBMovie, TMDBListResponse } from "@/types";
 
 /**
+ * Devuelve una película por su ID con información detallada.
+ */
+export const getMovieDetails = async (movieId: number): Promise<TMDBMovie> => {
+  const response = await fetchFromTMDB<TMDBMovie>(`/movie/${movieId}`);
+  return response;
+};
+
+/**
+ * Devuelve los créditos (cast y crew) de una película.
+ */
+export const getMovieCredits = async (movieId: number) => {
+  const response = await fetchFromTMDB<any>(`/movie/${movieId}/credits`);
+  return response;
+};
+
+/**
  * Devuelve las próximas películas a estrenarse.
  * @param limit Número total de películas deseadas (por defecto 20).
  */

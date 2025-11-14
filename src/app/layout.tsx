@@ -2,6 +2,7 @@
 
 import type { Metadata } from "next";
 import "@/app/globals.css";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Moviewer",
@@ -16,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body className="min-h-screen bg-black text-white antialiased flex flex-col overflow-x-hidden">
-        {children}
+        <div className="flex flex-col min-h-screen">
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   );

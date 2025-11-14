@@ -2,8 +2,9 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MediaCard from "@/components/MediaCard";
+import MediaModal from "@/components/MediaModal";
 import { TMDBMedia } from "@/types";
 
 interface Props {
@@ -23,6 +24,14 @@ export default function SearchResults({
   const [hasMore, setHasMore] = useState<boolean>(initialHasMore);
   const [nextPage, setNextPage] = useState<number>(initialNextPage || 1);
   const [loading, setLoading] = useState(false);
+  const [selectedMedia, setSelectedMedia] = useState<TMDBMedia | null>(null);
+
+  // Reset internal state when query or initialResults change
+  useEffect(() => {
+    setResults(initialResults || []);
+    setHasMore(initialHasMore);
+    setNextPage(initialNextPage || 1);
+  }, [query, initialResults, initialHasMore, initialNextPage]);
 
   const loadMore = async () => {
     if (!hasMore || loading) return;
@@ -45,9 +54,14 @@ export default function SearchResults({
 
   return (
     <section>
+      <MediaModal media={selectedMedia} onClose={() => setSelectedMedia(null)} />
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {results.map((m) => (
-          <MediaCard key={`${m.media_type}_${m.id}`} media={m} />
+          <MediaCard
+            key={`${m.media_type}_${m.id}`}
+            media={m}
+            onCardClick={setSelectedMedia}
+          />
         ))}
       </div>
 

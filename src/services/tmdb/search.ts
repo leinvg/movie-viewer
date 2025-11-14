@@ -73,6 +73,7 @@ export async function fetchFilteredSearch(
     requirePoster?: boolean;
     requireBackdrop?: boolean;
     requireGenres?: boolean;
+    requireOverview?: boolean;
     maxPagesToScan?: number; // to avoid long loops
   }
 ): Promise<SearchMediaResult> {
@@ -80,6 +81,7 @@ export async function fetchFilteredSearch(
     requirePoster = true,
     requireBackdrop = true,
     requireGenres = true,
+    requireOverview = true,
     maxPagesToScan = 5,
   } = options || {};
 
@@ -102,6 +104,7 @@ export async function fetchFilteredSearch(
         const g = (m as any).genre_ids;
         if (!Array.isArray(g) || g.length === 0) return false;
       }
+      if (requireOverview && !m.overview) return false;
       return true;
     });
 
