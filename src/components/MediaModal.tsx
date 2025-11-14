@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { TMDBMedia, TMDBMovie, TMDBTv } from "@/types";
-import { CreditsResponse } from "@/types/creditsTypes";
 import Image from "next/image";
 import { getImagePath } from "@/services/tmdb";
 import { TmdbImageSize } from "@/types";
+import { useFetchMedia } from "@/hooks";
+import { APP_CONFIG } from "@/config";
 
 interface MediaModalProps {
   media: TMDBMedia | null;
@@ -13,9 +14,8 @@ interface MediaModalProps {
 }
 
 export default function MediaModal({ media, onClose }: MediaModalProps) {
-  const [detailedMedia, setDetailedMedia] = useState<TMDBMedia | null>(media);
-  const [credits, setCredits] = useState<CreditsResponse | null>(null);
-  const [loading, setLoading] = useState(false);
+  const mediaType = (media?.media_type as "movie" | "tv" | null) || null;
+  const { media: detailedMedia, credits } = useFetchMedia(mediaType, media?.id ?? null);
 
   useEffect(() => {
     // Solo bloquear scroll si el modal está abierto
@@ -36,39 +36,6 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
       document.body.style.paddingRight = originalPadding;
     };
   }, [media]);
-
-  useEffect(() => {
-    if (!media) return;
-
-    const fetchDetails = async () => {
-      try {
-        setLoading(true);
-        const endpoint = media.media_type === "movie" ? `/api/media/movie/${media.id}` : `/api/media/tv/${media.id}`;
-
-        const response = await fetch(endpoint);
-        if (!response.ok) throw new Error("Failed to fetch media details");
-
-        const detailed = await response.json();
-        setDetailedMedia(detailed);
-
-        // Fetch credits
-        const creditsEndpoint = media.media_type === "movie" ? `/api/media/movie/${media.id}/credits` : `/api/media/tv/${media.id}/credits`;
-
-        const creditsResponse = await fetch(creditsEndpoint);
-        if (creditsResponse.ok) {
-          const creditsData = await creditsResponse.json();
-          setCredits(creditsData);
-        }
-      } catch (error) {
-        console.error("Error fetching media details:", error);
-        setDetailedMedia(media);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDetails();
-  }, [media?.id, media?.media_type]);
 
   if (!media) return null;
 
@@ -211,7 +178,7 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
               <div className="mt-6 pt-6 border-t border-gray-700">
                 <h2 className="text-xl font-semibold mb-4">Elenco</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                  {credits.cast.slice(0, 15).map((person) => (
+                  {credits.cast.slice(0, APP_CONFIG.credits.DISPLAY_LIMIT).map((person) => (
                     <div
                       key={`cast-${person.id}`}
                       className="text-center"
@@ -248,8 +215,8 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
                 <h2 className="text-xl font-semibold mb-4">Equipo</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {credits.crew
-                    .filter((person) => (person.job ? ["Director", "Producer", "Screenplay", "Cinematography"].includes(person.job) : false))
-                    .slice(0, 15)
+                    .filter((person) => (person.job ? (APP_CONFIG.credits.PRIORITY_JOBS as unknown as string[]).includes(person.job) : false))
+                    .slice(0, APP_CONFIG.credits.DISPLAY_LIMIT)
                     .map((person) => (
                       <div
                         key={`crew-${person.id}-${person.job}`}

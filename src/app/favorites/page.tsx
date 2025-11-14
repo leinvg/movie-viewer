@@ -1,7 +1,7 @@
-// src/app/favorites/page.tsx
 
 import FavoritesList from "@/components/FavoritesList";
 import SearchHeader from "@/components/SearchHeader";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export default function FavoritesPage() {
   return (
@@ -9,7 +9,9 @@ export default function FavoritesPage() {
       <SearchHeader initialQuery={""} />
       <div className="max-w-7xl mx-auto p-4">
         <h1 className="text-2xl font-bold mb-4">Tus Favoritos</h1>
-        <FavoritesList />
+        <ErrorBoundary>
+          <FavoritesList />
+        </ErrorBoundary>
       </div>
     </main>
   );

@@ -1,36 +1,29 @@
-// src/components/MediaCard.tsx
-
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { memo } from "react";
 import { TMDBMedia, TmdbImageSize } from "@/types";
 import { getImagePath } from "@/services/tmdb";
-import { isFavorited, toggleFavorite } from "@/services/local/favorites";
+import { useFavorites } from "@/hooks";
 
 interface MediaCardProps {
   media: TMDBMedia;
   onCardClick?: (media: TMDBMedia) => void;
 }
 
-/** Tarjeta visual de película o serie */
-export default function MediaCard({ media, onCardClick }: MediaCardProps) {
+/** Tarjeta visual de película o serie - Memoizado para evitar renders innecesarios */
+const MediaCard = memo(function MediaCard({
+  media,
+  onCardClick,
+}: MediaCardProps) {
   const title = "title" in media ? media.title : media.name;
   const img = getImagePath(media.poster_path, TmdbImageSize.W300);
-  const [fav, setFav] = useState<boolean>(false);
-
-  useEffect(() => {
-    setFav(isFavorited(media));
-    const onFav = () => setFav(isFavorited(media));
-    window.addEventListener("mv_favorites_changed", onFav as EventListener);
-    return () => window.removeEventListener("mv_favorites_changed", onFav as EventListener);
-  }, [media]);
+  const { isFavorited, toggleFavorite } = useFavorites();
+  const fav = isFavorited(media);
 
   const onToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     toggleFavorite(media);
-    // read actual state from storage to avoid race/ordering issues
-    setFav(isFavorited(media));
   };
 
   return (
@@ -48,7 +41,9 @@ export default function MediaCard({ media, onCardClick }: MediaCardProps) {
           loading="lazy"
         />
       ) : (
-        <div className="flex items-center justify-center h-full text-gray-400">❌</div>
+        <div className="flex items-center justify-center h-full text-gray-400">
+          ❌
+        </div>
       )}
 
       <button
@@ -62,4 +57,6 @@ export default function MediaCard({ media, onCardClick }: MediaCardProps) {
       </button>
     </div>
   );
-}
+});
+
+export default MediaCard;

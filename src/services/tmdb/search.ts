@@ -1,4 +1,3 @@
-// src/services/tmdb/search.ts
 
 import { fetchFromTMDB, RateLimitError } from "./client";
 import {
@@ -8,11 +7,12 @@ import {
   TMDBPerson,
   SearchMediaResult,
 } from "@/types";
+import { APP_CONFIG } from "@/config";
 
 export async function searchMedia(
   query: string,
   page: number = 1,
-  limit: number = 20
+  limit: number = APP_CONFIG.streaming.DEFAULT_SEARCH_LIMIT
 ): Promise<SearchMediaResult> {
   if (!query.trim()) return { results: [], hasMore: false, nextPage: 1 };
   try {
@@ -60,30 +60,33 @@ export async function searchMedia(
       nextPage: tmdbPage,
     };
   } catch (error: unknown) {
-    if (typeof error === "object" && error !== null && (error as { type?: unknown }).type === "RATE_LIMIT") throw error as RateLimitError;
+    if (typeof error === "object" && error !== null && (error as { type?: unknown }).type === "RATE_LIMIT")
+      throw error as RateLimitError;
     const message = error instanceof Error ? error.message : String(error);
     throw new Error(`Error en búsqueda TMDB: ${message}`);
   }
 }
 
+export interface FilterOptions {
+  requirePoster?: boolean;
+  requireBackdrop?: boolean;
+  requireGenres?: boolean;
+  requireOverview?: boolean;
+  maxPagesToScan?: number;
+}
+
 export async function fetchFilteredSearch(
   query: string,
   page: number = 1,
-  limit: number = 20,
-  options?: {
-    requirePoster?: boolean;
-    requireBackdrop?: boolean;
-    requireGenres?: boolean;
-    requireOverview?: boolean;
-    maxPagesToScan?: number; // to avoid long loops
-  }
+  limit: number = APP_CONFIG.streaming.DEFAULT_SEARCH_LIMIT,
+  options?: FilterOptions
 ): Promise<SearchMediaResult> {
   const {
-    requirePoster = true,
-    requireBackdrop = true,
-    requireGenres = true,
-    requireOverview = true,
-    maxPagesToScan = 5,
+    requirePoster = APP_CONFIG.search.FILTERS.requirePoster,
+    requireBackdrop = APP_CONFIG.search.FILTERS.requireBackdrop,
+    requireGenres = APP_CONFIG.search.FILTERS.requireGenres,
+    requireOverview = APP_CONFIG.search.FILTERS.requireOverview,
+    maxPagesToScan = APP_CONFIG.streaming.MAX_PAGES_SCAN,
   } = options || {};
 
   if (!query.trim()) return { results: [], hasMore: false, nextPage: page };

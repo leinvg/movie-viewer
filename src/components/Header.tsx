@@ -1,40 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useFavorites } from "@/hooks";
 
-interface Props {
-  children?: React.ReactNode; // centro del header (por ejemplo el input de búsqueda)
-}
-
-const FAVORITES_KEY = "mv_favorites";
-
-export default function Header({ children }: Props) {
+export default function Header({ children }: { children?: React.ReactNode }) {
   const router = useRouter();
-  const [count, setCount] = useState<number>(0);
-
-  useEffect(() => {
-    const read = () => {
-      try {
-        const raw = localStorage.getItem(FAVORITES_KEY);
-        const arr = raw ? JSON.parse(raw) : [];
-        setCount(Array.isArray(arr) ? arr.length : 0);
-      } catch {
-        setCount(0);
-      }
-    };
-    read();
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === FAVORITES_KEY) read();
-    };
-    const onCustom = () => read();
-    window.addEventListener("storage", onStorage);
-    window.addEventListener("mv_favorites_changed", onCustom as EventListener);
-    return () => {
-      window.removeEventListener("storage", onStorage);
-      window.removeEventListener("mv_favorites_changed", onCustom as EventListener);
-    };
-  }, []);
+  const { favorites } = useFavorites();
 
   return (
     <header className="bg-gradient-to-r from-gray-950 to-gray-900 border-b border-indigo-900/30 text-white shadow-lg">
@@ -55,7 +26,9 @@ export default function Header({ children }: Props) {
         >
           <span>⭐</span>
           <span>Favoritos</span>
-          <span className="bg-indigo-800 px-2 py-0.5 rounded text-xs font-bold">{count}</span>
+          <span className="bg-indigo-800 px-2 py-0.5 rounded text-xs font-bold">
+            {favorites.length}
+          </span>
         </button>
       </div>
     </header>

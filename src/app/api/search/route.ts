@@ -2,7 +2,6 @@
 
 import { NextResponse } from "next/server";
 import { fetchFilteredSearch } from "@/services/tmdb";
-import { RateLimitError } from "@/services/tmdb/client";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);

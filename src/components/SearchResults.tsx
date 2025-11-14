@@ -2,10 +2,11 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import MediaCard from "@/components/MediaCard";
 import MediaModal from "@/components/MediaModal";
 import { TMDBMedia } from "@/types";
+import { APP_CONFIG } from "@/config";
 
 interface Props {
   initialResults: TMDBMedia[];
@@ -26,7 +27,7 @@ export default function SearchResults({
   const [loading, setLoading] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<TMDBMedia | null>(null);
 
-  // Reset internal state when query or initialResults change
+  // Reset internal state when query o initialResults change
   useEffect(() => {
     setResults(initialResults || []);
     setHasMore(initialHasMore);
@@ -38,7 +39,9 @@ export default function SearchResults({
     setLoading(true);
     try {
       const res = await fetch(
-        `/api/search?q=${encodeURIComponent(query)}&page=${nextPage}&limit=12`
+        `/api/search?q=${encodeURIComponent(query)}&page=${nextPage}&limit=${
+          APP_CONFIG.pagination.ITEMS_PER_PAGE
+        }`
       );
       if (!res.ok) throw new Error("Network error");
       const data = await res.json();
@@ -52,9 +55,9 @@ export default function SearchResults({
     }
   };
 
-  return (
-    <section>
-      <MediaModal media={selectedMedia} onClose={() => setSelectedMedia(null)} />
+  // Memoizar grid para evitar renders innecesarios
+  const grid = useMemo(
+    () => (
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {results.map((m) => (
           <MediaCard
@@ -64,6 +67,14 @@ export default function SearchResults({
           />
         ))}
       </div>
+    ),
+    [results]
+  );
+
+  return (
+    <section>
+      <MediaModal media={selectedMedia} onClose={() => setSelectedMedia(null)} />
+      {grid}
 
       <div className="mt-6 flex justify-center">
         {hasMore ? (
