@@ -13,7 +13,23 @@ import {
   getOtherProviders,
   type ProviderStat,
 } from "@/utils/providerAggregator";
-import { APP_CONFIG } from "@/config";
+
+// Helper para obtener badges de tipo de servicio
+const getServiceTypeBadges = (types: Set<'flatrate' | 'rent' | 'buy'>) => {
+  const badges: { label: string; color: string }[] = [];
+  
+  if (types.has('flatrate')) {
+    badges.push({ label: 'Suscripción', color: 'bg-green-600 dark:bg-green-700' });
+  }
+  if (types.has('rent')) {
+    badges.push({ label: 'Renta', color: 'bg-blue-600 dark:bg-blue-700' });
+  }
+  if (types.has('buy')) {
+    badges.push({ label: 'Compra', color: 'bg-purple-600 dark:bg-purple-700' });
+  }
+  
+  return badges;
+};
 
 export default function FavoritesList() {
   const { favorites, region } = useAppStore();
@@ -76,7 +92,7 @@ export default function FavoritesList() {
   }, [favorites, region]);
 
   if (!favorites.length)
-    return <div className="text-gray-500">No tienes favoritos aún.</div>;
+    return <div className="text-gray-600 dark:text-gray-500">No tienes favoritos aún.</div>;
 
   const recommended = getRecommendedProviders(providerStats);
   const other = getOtherProviders(providerStats);
@@ -85,8 +101,8 @@ export default function FavoritesList() {
     <>
       <MediaModal media={selectedMedia} onClose={() => setSelectedMedia(null)} />
 
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold">
+      <div className="mb-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
           Recomendación de plataformas (región:{" "}
           {region})
         </h3>
@@ -95,55 +111,85 @@ export default function FavoritesList() {
             Calculando plataformas recomendadas...
           </p>
         ) : providerStats.length ? (
-          <div className="mt-3 flex flex-col sm:flex-row sm:items-center sm:gap-4">
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-300">Recomendadas:</span>
-              {recommended.map((r) => (
-                <div
-                  key={`rec-${r.id}`}
-                  className="flex items-center gap-2 bg-indigo-700/20 px-3 py-1 rounded-full"
-                >
-                  {r.logo ? (
-                    <Image
-                      src={`https://image.tmdb.org/t/p/w92${r.logo}`}
-                      alt={r.name}
-                      width={24}
-                      height={24}
-                      className="rounded"
-                    />
-                  ) : (
-                    <div className="w-6 h-6 bg-gray-700 rounded" />
-                  )}
-                  <span className="text-sm font-semibold">{r.name}</span>
-                  <span className="text-xs text-gray-400">{r.count}</span>
-                </div>
-              ))}
-            </div>
-
-            {other.length > 0 && (
-              <div className="mt-3 sm:mt-0 sm:ml-6">
-                <span className="text-sm text-gray-400">Otras plataformas:</span>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {other.map((p) => (
-                    <div
-                      key={`p-${p.id}`}
-                      className="flex items-center gap-2 bg-gray-800/40 px-2 py-1 rounded"
-                    >
-                      {p.logo ? (
+          <div className="mt-3 flex flex-col gap-3">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-sm text-gray-600 dark:text-gray-300">Recomendadas:</span>
+              {recommended.map((r) => {
+                const badges = getServiceTypeBadges(r.types);
+                return (
+                  <div
+                    key={`rec-${r.id}`}
+                    className="flex flex-col gap-1 bg-indigo-100 dark:bg-indigo-700/20 px-3 py-2 rounded-lg border border-indigo-200 dark:border-indigo-600/30"
+                  >
+                    <div className="flex items-center gap-2">
+                      {r.logo ? (
                         <Image
-                          src={`https://image.tmdb.org/t/p/w92${p.logo}`}
-                          alt={p.name}
+                          src={`https://image.tmdb.org/t/p/w92${r.logo}`}
+                          alt={r.name}
                           width={24}
                           height={24}
                           className="rounded"
                         />
                       ) : (
-                        <div className="w-6 h-6 bg-gray-700 rounded" />
+                        <div className="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded" />
                       )}
-                      <span className="text-sm">{p.name}</span>
-                      <span className="text-xs text-gray-400">{p.count}</span>
+                      <span className="text-sm font-semibold text-gray-900 dark:text-white">{r.name}</span>
+                      <span className="text-xs text-gray-600 dark:text-gray-400">({r.count})</span>
                     </div>
-                  ))}
+                    <div className="flex gap-1 flex-wrap">
+                      {badges.map((badge, idx) => (
+                        <span
+                          key={idx}
+                          className={`text-xs px-2 py-0.5 rounded-full text-white ${badge.color}`}
+                        >
+                          {badge.label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {other.length > 0 && (
+              <div>
+                <span className="text-sm text-gray-600 dark:text-gray-400">Otras plataformas:</span>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {other.map((p) => {
+                    const badges = getServiceTypeBadges(p.types);
+                    return (
+                      <div
+                        key={`p-${p.id}`}
+                        className="flex flex-col gap-1 bg-gray-100 dark:bg-gray-800/40 px-2 py-1.5 rounded border border-gray-200 dark:border-gray-700"
+                      >
+                        <div className="flex items-center gap-2">
+                          {p.logo ? (
+                            <Image
+                              src={`https://image.tmdb.org/t/p/w92${p.logo}`}
+                              alt={p.name}
+                              width={20}
+                              height={20}
+                              className="rounded"
+                            />
+                          ) : (
+                            <div className="w-5 h-5 bg-gray-300 dark:bg-gray-700 rounded" />
+                          )}
+                          <span className="text-sm text-gray-900 dark:text-white">{p.name}</span>
+                          <span className="text-xs text-gray-600 dark:text-gray-400">({p.count})</span>
+                        </div>
+                        <div className="flex gap-1 flex-wrap ml-7">
+                          {badges.map((badge, idx) => (
+                            <span
+                              key={idx}
+                              className={`text-xs px-1.5 py-0.5 rounded text-white ${badge.color}`}
+                            >
+                              {badge.label}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}

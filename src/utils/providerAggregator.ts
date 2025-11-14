@@ -10,6 +10,7 @@ export interface ProviderStat {
   logo: string | null;
   count: number;
   mediaIds: number[];
+  types: Set<'flatrate' | 'rent' | 'buy'>; // Tipos de servicio donde aparece
 }
 
 /**
@@ -37,35 +38,40 @@ export const aggregateProviders = (
       provResp.results[region] || provResp.results[region.toLowerCase()];
     if (!regionData) return;
 
-    // Juntar todos los proveedores (flatrate, buy, rent)
-    const providers: WatchProvider[] = [];
-    if (Array.isArray(regionData.flatrate)) providers.push(...regionData.flatrate);
-    if (Array.isArray(regionData.buy)) providers.push(...regionData.buy);
-    if (Array.isArray(regionData.rent)) providers.push(...regionData.rent);
+    // Procesar proveedores por categoría
+    const processProviders = (providers: WatchProvider[] | undefined, type: 'flatrate' | 'rent' | 'buy') => {
+      if (!Array.isArray(providers)) return;
+      
+      providers.forEach((provider) => {
+        const providerId = provider.provider_id;
+        const key = String(providerId);
 
-    // Agregar a la estadística
-    providers.forEach((provider) => {
-      const providerId = provider.provider_id;
-      const key = String(providerId);
+        if (!providerId) return;
 
-      if (!providerId) return;
-
-      const existing = map.get(key);
-      if (existing) {
-        if (!existing.mediaIds.includes(media.id)) {
-          existing.mediaIds.push(media.id);
-          existing.count = existing.mediaIds.length;
+        const existing = map.get(key);
+        if (existing) {
+          existing.types.add(type);
+          if (!existing.mediaIds.includes(media.id)) {
+            existing.mediaIds.push(media.id);
+            existing.count = existing.mediaIds.length;
+          }
+        } else {
+          map.set(key, {
+            id: providerId,
+            name: provider.provider_name,
+            logo: provider.logo_path ?? null,
+            count: 1,
+            mediaIds: [media.id],
+            types: new Set([type]),
+          });
         }
-      } else {
-        map.set(key, {
-          id: providerId,
-          name: provider.provider_name,
-          logo: provider.logo_path ?? null,
-          count: 1,
-          mediaIds: [media.id],
-        });
-      }
-    });
+      });
+    };
+
+    // Agregar proveedores por tipo
+    processProviders(regionData.flatrate, 'flatrate');
+    processProviders(regionData.rent, 'rent');
+    processProviders(regionData.buy, 'buy');
   });
 
   // Convertir a array y ordenar por count (desc) y nombre (asc)

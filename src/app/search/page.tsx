@@ -23,7 +23,7 @@ export default async function SearchPage({ searchParams }: Props) {
   }
 
   return (
-    <main className="flex-1">
+    <main className="flex-1 bg-gray-50 dark:bg-gray-900">
       <SearchHeader initialQuery={q} />
       <div className="p-4 max-w-7xl mx-auto">
         {q ? (
