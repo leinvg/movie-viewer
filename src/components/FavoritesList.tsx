@@ -5,7 +5,7 @@ import Image from "next/image";
 import MediaCard from "@/components/MediaCard";
 import MediaModal from "@/components/MediaModal";
 import { TMDBMedia } from "@/types";
-import { useFavorites } from "@/hooks";
+import useAppStore from "@/store/appStore";
 import { WatchProvidersResponse } from "@/types/watchProviderTypes";
 import {
   aggregateProviders,
@@ -16,7 +16,7 @@ import {
 import { APP_CONFIG } from "@/config";
 
 export default function FavoritesList() {
-  const { favorites } = useFavorites();
+  const { favorites } = useAppStore();
   const [selectedMedia, setSelectedMedia] = useState<TMDBMedia | null>(null);
   const [providerStats, setProviderStats] = useState<ProviderStat[]>([]);
   const [providersLoading, setProvidersLoading] = useState(false);

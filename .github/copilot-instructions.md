@@ -8,10 +8,36 @@ Usa **Next.js 15** (TypeScript) con **Tailwind CSS 4**, integración con **TMDB 
 
 ### Core Stack
 - **Framework**: Next.js 15 (App Router, Server Components)
-- **Styling**: Tailwind CSS 4 + PostCSS
+- **Styling**: Tailwind CSS 4 + PostCSS (dark mode support)
+- **State Management**: **Zustand** (lightweight, persistent store)
 - **Carousel**: Embla Carousel React (responsive, client-side)
 - **External API**: TMDB v3 (Bearer token auth)
 - **Types**: TypeScript strict mode
+
+### Global State Store (`src/store/appStore.ts`)
+**Zustand store** con persistencia automática en localStorage (`app-store`):
+
+```typescript
+interface AppState {
+  // Tema
+  theme: 'light' | 'dark'
+  setTheme(theme) | toggleTheme()
+  
+  // Región/Idioma
+  language: 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt'
+  setLanguage(language)
+  
+  // Favoritos
+  favorites: TMDBMedia[]
+  addFavorite(media) | removeFavorite(media) | isFavorite(media) | clearFavorites()
+}
+```
+
+**Key patterns**:
+- Acceso global: `const { theme, language, favorites } = useAppStore()`
+- Cambios: `useAppStore.setState()` o funciones específicas
+- Favoritos identificados por `${media_type}_${id}`
+- Tema sincronizado con clase `dark` del documento
 
 ### Service Layer Structure (`src/services/`)
 ```
@@ -38,9 +64,11 @@ local/
 **Key pattern**: Discriminated unions use `media_type` ("movie", "tv", "person") as type guard.
 
 ### Component Tree
+- **Layout** (`src/app/layout.tsx`) → Wraps `ThemeProvider` para sincronizar tema
+- **Header** (`src/components/Header.tsx`) → Client, integra `ThemeToggle` + `LanguageSelector`
 - **Home** (`src/app/page.tsx`) → Server component, fetches 4 data streams in parallel
-- **Carousel** (`src/components/Carousel.tsx`) → Client component, responsive slides (8→3 items based on width)
-- **MediaCard** (`src/components/MediaCard.tsx`) → Displays poster + metadata, imports `getImagePath` helper
+- **MediaCard** (`src/components/MediaCard.tsx`) → Displays poster + metadata, usa `useAppStore` para favoritos
+- **FavoritesList** (`src/components/FavoritesList.tsx`) → Cliente, lista favoritos desde store
 
 ## Developer Workflows
 
@@ -63,6 +91,27 @@ npm run lint       # ESLint check
 
 ## Code Patterns & Conventions
 
+### State Management (Zustand)
+```typescript
+// Importar store
+import useAppStore from '@/store/appStore';
+
+// En componente client
+'use client';
+const { theme, language, favorites, addFavorite, removeFavorite } = useAppStore();
+
+// Cambiar estado
+toggleTheme(); // Alterna entre light/dark
+setLanguage('en'); // Cambia idioma
+addFavorite(media); // Añade a favoritos
+```
+
+**Características**:
+- ✅ Persistencia automática en localStorage (`app-store`)
+- ✅ Sincronización instantánea entre componentes
+- ✅ Sin boilerplate (acciones inline)
+- ⚠️ Solo en Client Components
+
 ### API Integration (TMDB)
 1. Define endpoint + query params in service function (e.g., `trending.ts`)
 2. Call `fetchFromTMDB<ResponseType>(endpoint)` with language + token auto-handled
@@ -76,9 +125,10 @@ npm run lint       # ESLint check
 
 ### Component Patterns
 - **Server Components** (app/page.tsx): Use `async`, fetch data, pass to children
-- **Client Components** ("use client" at top): Carousels, event handlers, responsive layouts
+- **Client Components** ("use client" at top): Use `useAppStore` para favoritos, tema, idioma
 - **Props typing**: Explicit interfaces (`CarouselProps`, `MediaCardProps`)
 - **Responsive**: Use Tailwind breakpoints; dynamic JS calculations if needed (e.g., Embla slides)
+- **Dark mode**: Clases `dark:` en Tailwind; tema aplicado por `ThemeProvider`
 
 ### File Organization
 - Types colocated in `src/types/mediaTypes.ts` (not scattered)
@@ -111,9 +161,10 @@ npm run lint       # ESLint check
 - Client-side interactivity: use React hooks (`useState`, `useEffect`, `useCallback`)
 
 ## Important Notes
-- **No external state management**: Single fetching in Home, props drilling (app is small)
+- **Global State**: Zustand store (`app-store`) manage favoritos, tema e idioma
 - **Reserved modules**: `tv.ts`, `providers.ts`, `favorites.ts` — stub placeholders for future work
-- **HTML comments in JSX**: Carousels currently commented out in `page.tsx` (WIP)
+- **Dark mode**: Tailwind dark mode enabled; apply class `dark` to `<html>` (managed by `ThemeProvider`)
+- **Tema persistido**: Se guarda en localStorage automáticamente
 - **Environment variables**: Only `TMDB_TOKEN` required; must be in `.env.local` (not committed)
 
 ## Useful References

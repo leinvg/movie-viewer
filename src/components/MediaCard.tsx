@@ -4,7 +4,7 @@ import Image from "next/image";
 import { memo } from "react";
 import { TMDBMedia, TmdbImageSize } from "@/types";
 import { getImagePath } from "@/services/tmdb";
-import { useFavorites } from "@/hooks";
+import useAppStore from "@/store/appStore";
 
 interface MediaCardProps {
   media: TMDBMedia;
@@ -18,18 +18,22 @@ const MediaCard = memo(function MediaCard({
 }: MediaCardProps) {
   const title = "title" in media ? media.title : media.name;
   const img = getImagePath(media.poster_path, TmdbImageSize.W300);
-  const { isFavorited, toggleFavorite } = useFavorites();
-  const fav = isFavorited(media);
+  const { isFavorite, addFavorite, removeFavorite } = useAppStore();
+  const isFav = isFavorite(media);
 
   const onToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toggleFavorite(media);
+    if (isFav) {
+      removeFavorite(media);
+    } else {
+      addFavorite(media);
+    }
   };
 
   return (
     <div
       onClick={() => onCardClick?.(media)}
-      className="aspect-[2/3] rounded-lg overflow-hidden bg-gray-800 relative cursor-pointer hover:shadow-lg hover:shadow-indigo-500/50 transition-shadow"
+      className="aspect-[2/3] rounded-lg overflow-hidden bg-gray-800 dark:bg-gray-800 relative cursor-pointer hover:shadow-lg hover:shadow-indigo-500/50 transition-shadow"
     >
       {img ? (
         <Image
@@ -48,12 +52,12 @@ const MediaCard = memo(function MediaCard({
 
       <button
         onClick={onToggle}
-        aria-label={fav ? "Quitar de favoritos" : "Añadir a favoritos"}
+        aria-label={isFav ? "Quitar de favoritos" : "Añadir a favoritos"}
         className={`absolute top-2 right-2 z-10 px-2 py-1 rounded-md text-sm font-semibold transition-opacity ${
-          fav ? "bg-yellow-400 text-black" : "bg-black/40 text-white"
+          isFav ? "bg-yellow-400 text-black" : "bg-black/40 text-white"
         }`}
       >
-        {fav ? "★" : "☆"}
+        {isFav ? "★" : "☆"}
       </button>
     </div>
   );

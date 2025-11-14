@@ -1,11 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useFavorites } from "@/hooks";
+import useAppStore from "@/store/appStore";
+import ThemeToggle from "./ThemeToggle";
+import LanguageSelector from "./LanguageSelector";
 
 export default function Header({ children }: { children?: React.ReactNode }) {
   const router = useRouter();
-  const { favorites } = useFavorites();
+  const { favorites } = useAppStore();
 
   return (
     <header className="bg-gradient-to-r from-gray-950 to-gray-900 border-b border-indigo-900/30 text-white shadow-lg">
@@ -18,6 +20,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
         </div>
 
         <div className="flex-1">{children}</div>
+
+        {/* Controles de tema e idioma */}
+        <div className="flex items-center gap-3">
+          <LanguageSelector />
+          <ThemeToggle />
+        </div>
 
         <button
           onClick={() => router.push("/favorites")}
