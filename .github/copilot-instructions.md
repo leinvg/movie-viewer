@@ -23,9 +23,9 @@ interface AppState {
   theme: 'light' | 'dark'
   setTheme(theme) | toggleTheme()
   
-  // Región/Idioma
-  language: 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt'
-  setLanguage(language)
+  // Región (para watch providers)
+  region: 'PE' | 'BO' | 'CL' | 'CO' | 'EC'
+  setRegion(region)
   
   // Favoritos
   favorites: TMDBMedia[]
@@ -34,10 +34,11 @@ interface AppState {
 ```
 
 **Key patterns**:
-- Acceso global: `const { theme, language, favorites } = useAppStore()`
+- Acceso global: `const { theme, region, favorites } = useAppStore()`
 - Cambios: `useAppStore.setState()` o funciones específicas
 - Favoritos identificados por `${media_type}_${id}`
 - Tema sincronizado con clase `dark` del documento
+- **Idioma fijo a es-ES en TMDB** (solo región es variable para watch providers)
 
 ### Service Layer Structure (`src/services/`)
 ```
@@ -98,11 +99,11 @@ import useAppStore from '@/store/appStore';
 
 // En componente client
 'use client';
-const { theme, language, favorites, addFavorite, removeFavorite } = useAppStore();
+const { theme, region, favorites, addFavorite, removeFavorite } = useAppStore();
 
 // Cambiar estado
 toggleTheme(); // Alterna entre light/dark
-setLanguage('en'); // Cambia idioma
+setRegion('PE'); // Cambia región para watch providers (PE, BO, CL, CO, EC)
 addFavorite(media); // Añade a favoritos
 ```
 
@@ -110,6 +111,7 @@ addFavorite(media); // Añade a favoritos
 - ✅ Persistencia automática en localStorage (`app-store`)
 - ✅ Sincronización instantánea entre componentes
 - ✅ Sin boilerplate (acciones inline)
+- ✅ Idioma fijo a es-ES para TMDB, región variable para providers
 - ⚠️ Solo en Client Components
 
 ### API Integration (TMDB)
@@ -161,7 +163,9 @@ addFavorite(media); // Añade a favoritos
 - Client-side interactivity: use React hooks (`useState`, `useEffect`, `useCallback`)
 
 ## Important Notes
-- **Global State**: Zustand store (`app-store`) manage favoritos, tema e idioma
+- **Global State**: Zustand store (`app-store`) manage favoritos, tema y región
+- **Idioma fijo**: es-ES siempre en TMDB (para content), región variable para watch providers
+- **Regiones soportadas**: PE, BO, CL, CO, EC
 - **Reserved modules**: `tv.ts`, `providers.ts`, `favorites.ts` — stub placeholders for future work
 - **Dark mode**: Tailwind dark mode enabled; apply class `dark` to `<html>` (managed by `ThemeProvider`)
 - **Tema persistido**: Se guarda en localStorage automáticamente

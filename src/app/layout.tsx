@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="scroll-smooth">
-      <body className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white antialiased flex flex-col overflow-x-hidden">
+      <body className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white antialiased flex flex-col overflow-x-hidden transition-colors">
         <ThemeProvider />
         <div className="flex flex-col min-h-screen">
           {children}

@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { TMDBMedia } from '@/types';
 
 export type Theme = 'light' | 'dark';
-export type Language = 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt';
+export type Region = 'PE' | 'BO' | 'CL' | 'CO' | 'EC';
 
 interface AppState {
   // Tema
@@ -11,9 +11,9 @@ interface AppState {
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 
-  // Región/Idioma
-  language: Language;
-  setLanguage: (language: Language) => void;
+  // Región (para watch providers)
+  region: Region;
+  setRegion: (region: Region) => void;
 
   // Favoritos
   favorites: TMDBMedia[];
@@ -34,9 +34,9 @@ const useAppStore = create<AppState>()(
           theme: state.theme === 'light' ? 'dark' : 'light',
         })),
 
-      // Región/Idioma - español por defecto
-      language: 'es',
-      setLanguage: (language) => set({ language }),
+      // Región - PE por defecto
+      region: 'PE',
+      setRegion: (region) => set({ region }),
 
       // Favoritos
       favorites: [],

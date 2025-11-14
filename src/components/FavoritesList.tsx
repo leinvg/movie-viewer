@@ -16,12 +16,12 @@ import {
 import { APP_CONFIG } from "@/config";
 
 export default function FavoritesList() {
-  const { favorites } = useAppStore();
+  const { favorites, region } = useAppStore();
   const [selectedMedia, setSelectedMedia] = useState<TMDBMedia | null>(null);
   const [providerStats, setProviderStats] = useState<ProviderStat[]>([]);
   const [providersLoading, setProvidersLoading] = useState(false);
 
-  // Cargar proveedores cuando cambien favoritos
+  // Cargar proveedores cuando cambien favoritos o región
   useEffect(() => {
     if (!favorites || favorites.length === 0) {
       setProviderStats([]);
@@ -29,12 +29,12 @@ export default function FavoritesList() {
     }
 
     let mounted = true;
-    const cacheKey = (type: string, id: number) => `mv_providers_${type}_${id}`;
+    const cacheKey = (type: string, id: number, reg: string) => `mv_providers_${type}_${id}_${reg}`;
 
     const fetchProvidersFor = async (
       m: TMDBMedia
     ): Promise<WatchProvidersResponse | null> => {
-      const key = cacheKey(m.media_type, m.id);
+      const key = cacheKey(m.media_type, m.id, region);
       const cached = sessionStorage.getItem(key);
       if (cached) return JSON.parse(cached);
 
@@ -60,7 +60,7 @@ export default function FavoritesList() {
         const stats = aggregateProviders(
           favorites,
           responses,
-          APP_CONFIG.streaming.DEFAULT_REGION
+          region
         );
         if (mounted) setProviderStats(stats);
       } finally {
@@ -73,7 +73,7 @@ export default function FavoritesList() {
     return () => {
       mounted = false;
     };
-  }, [favorites]);
+  }, [favorites, region]);
 
   if (!favorites.length)
     return <div className="text-gray-500">No tienes favoritos aún.</div>;
@@ -88,7 +88,7 @@ export default function FavoritesList() {
       <div className="mb-6">
         <h3 className="text-lg font-semibold">
           Recomendación de plataformas (región:{" "}
-          {APP_CONFIG.streaming.DEFAULT_REGION})
+          {region})
         </h3>
         {providersLoading ? (
           <p className="text-sm text-gray-400">

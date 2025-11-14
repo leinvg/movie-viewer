@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import useAppStore from "@/store/appStore";
 import ThemeToggle from "./ThemeToggle";
-import LanguageSelector from "./LanguageSelector";
+import RegionSelector from "./RegionSelector";
 
 export default function Header({ children }: { children?: React.ReactNode }) {
   const router = useRouter();
@@ -21,9 +21,9 @@ export default function Header({ children }: { children?: React.ReactNode }) {
 
         <div className="flex-1">{children}</div>
 
-        {/* Controles de tema e idioma */}
+        {/* Controles de tema y región */}
         <div className="flex items-center gap-3">
-          <LanguageSelector />
+          <RegionSelector />
           <ThemeToggle />
         </div>
 
