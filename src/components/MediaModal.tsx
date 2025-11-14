@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TMDBMedia } from "@/types";
+import { TMDBMedia, TMDBMovie, TMDBTv } from "@/types";
+import { CreditsResponse } from "@/types/creditsTypes";
 import Image from "next/image";
 import { getImagePath } from "@/services/tmdb";
 import { TmdbImageSize } from "@/types";
@@ -13,7 +14,7 @@ interface MediaModalProps {
 
 export default function MediaModal({ media, onClose }: MediaModalProps) {
   const [detailedMedia, setDetailedMedia] = useState<TMDBMedia | null>(media);
-  const [credits, setCredits] = useState<any>(null);
+  const [credits, setCredits] = useState<CreditsResponse | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -42,10 +43,7 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
     const fetchDetails = async () => {
       try {
         setLoading(true);
-        const endpoint =
-          media.media_type === "movie"
-            ? `/api/media/movie/${(media as any).id}`
-            : `/api/media/tv/${(media as any).id}`;
+        const endpoint = media.media_type === "movie" ? `/api/media/movie/${media.id}` : `/api/media/tv/${media.id}`;
 
         const response = await fetch(endpoint);
         if (!response.ok) throw new Error("Failed to fetch media details");
@@ -54,10 +52,7 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
         setDetailedMedia(detailed);
 
         // Fetch credits
-        const creditsEndpoint =
-          media.media_type === "movie"
-            ? `/api/media/movie/${(media as any).id}/credits`
-            : `/api/media/tv/${(media as any).id}/credits`;
+        const creditsEndpoint = media.media_type === "movie" ? `/api/media/movie/${media.id}/credits` : `/api/media/tv/${media.id}/credits`;
 
         const creditsResponse = await fetch(creditsEndpoint);
         if (creditsResponse.ok) {
@@ -77,11 +72,13 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
 
   if (!media) return null;
 
-  const displayMedia = detailedMedia || media;
+  const displayMedia = (detailedMedia || media) as TMDBMedia;
   const isMovie = displayMedia.media_type === "movie";
-  const title = isMovie ? (displayMedia as any).title : (displayMedia as any).name;
-  const original = isMovie ? (displayMedia as any).original_title : (displayMedia as any).original_name;
-  const releaseDate = isMovie ? (displayMedia as any).release_date : (displayMedia as any).first_air_date;
+  const movie = displayMedia as TMDBMovie;
+  const tv = displayMedia as TMDBTv;
+  const title = isMovie ? movie.title : tv.name;
+  const original = isMovie ? movie.original_title : tv.original_name;
+  const releaseDate = isMovie ? movie.release_date : tv.first_air_date;
   const backdropUrl = getImagePath(displayMedia.backdrop_path, TmdbImageSize.W780);
 
   return (
@@ -192,22 +189,20 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
             )}
 
             {/* Series-only info */}
-            {!(displayMedia as any).title && (displayMedia as any).origin_country && (
+            {!isMovie && (tv.origin_country && tv.origin_country.length > 0) && (
               <div className="mt-6 pt-6 border-t border-gray-700">
                 <span className="font-semibold text-sm">Países de origen:</span>
                 <p className="text-gray-300 mt-2">
-                  {(displayMedia as any).origin_country.join(", ")}
+                  {tv.origin_country.join(", ")}
                 </p>
               </div>
             )}
 
             {/* Movie-only info */}
-            {(displayMedia as any).title && (displayMedia as any).video !== undefined && (
+            {isMovie && typeof movie.video !== "undefined" && (
               <div className="mt-6 pt-6 border-t border-gray-700">
                 <span className="font-semibold text-sm">Contiene video:</span>
-                <p className="text-gray-300 mt-2">
-                  {(displayMedia as any).video ? "Sí" : "No"}
-                </p>
+                <p className="text-gray-300 mt-2">{movie.video ? "Sí" : "No"}</p>
               </div>
             )}
 
@@ -216,7 +211,7 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
               <div className="mt-6 pt-6 border-t border-gray-700">
                 <h2 className="text-xl font-semibold mb-4">Elenco</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                  {credits.cast.slice(0, 15).map((person: any) => (
+                  {credits.cast.slice(0, 15).map((person) => (
                     <div
                       key={`cast-${person.id}`}
                       className="text-center"
@@ -253,9 +248,9 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
                 <h2 className="text-xl font-semibold mb-4">Equipo</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {credits.crew
-                    .filter((person: any) => ["Director", "Producer", "Screenplay", "Cinematography"].includes(person.job))
+                    .filter((person) => (person.job ? ["Director", "Producer", "Screenplay", "Cinematography"].includes(person.job) : false))
                     .slice(0, 15)
-                    .map((person: any) => (
+                    .map((person) => (
                       <div
                         key={`crew-${person.id}-${person.job}`}
                         className="text-center"

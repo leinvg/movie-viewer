@@ -1,6 +1,6 @@
 // src/services/tmdb/search.ts
 
-import { fetchFromTMDB } from "./client";
+import { fetchFromTMDB, RateLimitError } from "./client";
 import {
   TMDBListResponse,
   TMDBMultiMedia,
@@ -59,9 +59,10 @@ export async function searchMedia(
       hasMore: results.length >= limit || hasMore,
       nextPage: tmdbPage,
     };
-  } catch (error: any) {
-    if (error.type === "RATE_LIMIT") throw error;
-    throw new Error(`Error en búsqueda TMDB: ${error.message}`);
+  } catch (error: unknown) {
+    if (typeof error === "object" && error !== null && (error as { type?: unknown }).type === "RATE_LIMIT") throw error as RateLimitError;
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Error en búsqueda TMDB: ${message}`);
   }
 }
 
@@ -101,7 +102,7 @@ export async function fetchFilteredSearch(
       if (requirePoster && !m.poster_path) return false;
       if (requireBackdrop && !m.backdrop_path) return false;
       if (requireGenres) {
-        const g = (m as any).genre_ids;
+        const g = m.genre_ids;
         if (!Array.isArray(g) || g.length === 0) return false;
       }
       if (requireOverview && !m.overview) return false;

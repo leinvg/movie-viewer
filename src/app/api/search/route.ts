@@ -2,6 +2,7 @@
 
 import { NextResponse } from "next/server";
 import { fetchFilteredSearch } from "@/services/tmdb";
+import { RateLimitError } from "@/services/tmdb/client";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -17,16 +18,12 @@ export async function GET(req: Request) {
     // Delegate to centralized service (same filtering rules as SSR)
     const data = await fetchFilteredSearch(q, page, limit, { maxPagesToScan: 8 });
     return NextResponse.json(data);
-  } catch (err: any) {
-    if (err && err.type === "RATE_LIMIT") {
-      return NextResponse.json(
-        { error: "RATE_LIMIT", retryAfter: err.retryAfter },
-        { status: 429 }
-      );
+  } catch (err: unknown) {
+    if (typeof err === "object" && err !== null && (err as { type?: unknown }).type === "RATE_LIMIT") {
+      const retryAfter = (err as { retryAfter?: number }).retryAfter;
+      return NextResponse.json({ error: "RATE_LIMIT", retryAfter }, { status: 429 });
     }
-    return NextResponse.json(
-      { error: err?.message || String(err) },
-      { status: 500 }
-    );
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

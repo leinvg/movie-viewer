@@ -1,6 +1,8 @@
 // src/services/tmdb/tmdbMovies.ts
 import { fetchFromTMDB } from "./client";
 import { TMDBMovie, TMDBListResponse } from "@/types";
+import { CreditsResponse } from "@/types/creditsTypes";
+import { WatchProvidersResponse } from "@/types/watchProviderTypes";
 
 /**
  * Devuelve una película por su ID con información detallada.
@@ -13,16 +15,16 @@ export const getMovieDetails = async (movieId: number): Promise<TMDBMovie> => {
 /**
  * Devuelve los créditos (cast y crew) de una película.
  */
-export const getMovieCredits = async (movieId: number) => {
-  const response = await fetchFromTMDB<any>(`/movie/${movieId}/credits`);
+export const getMovieCredits = async (movieId: number): Promise<CreditsResponse> => {
+  const response = await fetchFromTMDB<CreditsResponse>(`/movie/${movieId}/credits`);
   return response;
 };
 
 /**
  * Devuelve los proveedores de watch/providers de una película.
  */
-export const getMovieProviders = async (movieId: number) => {
-  const response = await fetchFromTMDB<any>(`/movie/${movieId}/watch/providers`);
+export const getMovieProviders = async (movieId: number): Promise<WatchProvidersResponse> => {
+  const response = await fetchFromTMDB<WatchProvidersResponse>(`/movie/${movieId}/watch/providers`);
   return response;
 };
 

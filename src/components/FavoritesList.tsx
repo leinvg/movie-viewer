@@ -5,11 +5,20 @@ import MediaCard from "@/components/MediaCard";
 import MediaModal from "@/components/MediaModal";
 import { getFavorites } from "@/services/local/favorites";
 import { TMDBMedia } from "@/types";
+import { WatchProvidersResponse, WatchProvider } from "@/types/watchProviderTypes";
+
+interface ProviderStat {
+  id: number;
+  name: string;
+  logo?: string | null;
+  count: number;
+  mediaIds: number[];
+}
 
 export default function FavoritesList() {
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<TMDBMedia[]>([]);
   const [selectedMedia, setSelectedMedia] = useState<TMDBMedia | null>(null);
-  const [providerStats, setProviderStats] = useState<any[]>([]);
+  const [providerStats, setProviderStats] = useState<ProviderStat[]>([]);
   const [providersLoading, setProvidersLoading] = useState(false);
 
   useEffect(() => {
@@ -41,7 +50,7 @@ export default function FavoritesList() {
     const REGION = "PE"; // Perú
     const cacheKey = (type: string, id: number) => `mv_providers_${type}_${id}`;
 
-    const fetchProvidersFor = async (m: any) => {
+    const fetchProvidersFor = async (m: TMDBMedia): Promise<WatchProvidersResponse | null> => {
       const key = cacheKey(m.media_type, m.id);
       const cached = sessionStorage.getItem(key);
       if (cached) return JSON.parse(cached);
@@ -52,7 +61,7 @@ export default function FavoritesList() {
         if (!res.ok) return null;
         const json = await res.json();
         sessionStorage.setItem(key, JSON.stringify(json));
-        return json;
+        return json as WatchProvidersResponse;
       } catch (e) {
         console.warn("failed providers", e);
         return null;
@@ -64,7 +73,7 @@ export default function FavoritesList() {
       try {
         const all = await Promise.all(items.map((it) => fetchProvidersFor(it)));
 
-        const map = new Map<string, { id: number; name: string; logo?: string; count: number; mediaIds: number[] }>();
+        const map = new Map<string, ProviderStat>();
 
         all.forEach((provResp, idx) => {
           const media = items[idx];
@@ -72,15 +81,15 @@ export default function FavoritesList() {
           const country = provResp.results[REGION] || provResp.results[REGION.toLowerCase()];
           if (!country) return;
 
-          const providerLists = [] as any[];
+          const providerLists: WatchProvider[] = [];
           if (Array.isArray(country.flatrate)) providerLists.push(...country.flatrate);
           if (Array.isArray(country.buy)) providerLists.push(...country.buy);
           if (Array.isArray(country.rent)) providerLists.push(...country.rent);
 
           providerLists.forEach((p) => {
-            const pid = p.provider_id ?? p.provider_id ?? p.id ?? p.provider ?? null;
-            const name = p.provider_name ?? p.provider_name ?? p.name ?? p.provider ?? "Desconocido";
-            const logo = p.logo_path ?? p.logo_path ?? null;
+            const pid = p.provider_id;
+            const name = p.provider_name;
+            const logo = p.logo_path ?? null;
             if (!pid) return;
             const key = String(pid);
             const existing = map.get(key);
