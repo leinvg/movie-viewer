@@ -19,6 +19,14 @@ export const getMovieCredits = async (movieId: number) => {
 };
 
 /**
+ * Devuelve los proveedores de watch/providers de una película.
+ */
+export const getMovieProviders = async (movieId: number) => {
+  const response = await fetchFromTMDB<any>(`/movie/${movieId}/watch/providers`);
+  return response;
+};
+
+/**
  * Devuelve las próximas películas a estrenarse.
  * @param limit Número total de películas deseadas (por defecto 20).
  */

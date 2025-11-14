@@ -17,3 +17,11 @@ export const getTvCredits = async (tvId: number) => {
   const response = await fetchFromTMDB<any>(`/tv/${tvId}/credits`);
   return response;
 };
+
+/**
+ * Devuelve los proveedores de watch/providers de una serie.
+ */
+export const getTvProviders = async (tvId: number) => {
+  const response = await fetchFromTMDB<any>(`/tv/${tvId}/watch/providers`);
+  return response;
+};
