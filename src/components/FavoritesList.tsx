@@ -96,6 +96,9 @@ export default function FavoritesList() {
 
   const recommended = getRecommendedProviders(providerStats);
   const other = getOtherProviders(providerStats);
+  const recFlatrate = recommended.filter((r) => r.types.has('flatrate'));
+  const recRent = recommended.filter((r) => r.types.has('rent'));
+  const recBuy = recommended.filter((r) => r.types.has('buy'));
 
   return (
     <>
@@ -111,45 +114,137 @@ export default function FavoritesList() {
             Calculando plataformas recomendadas...
           </p>
         ) : providerStats.length ? (
-          <div className="mt-3 flex flex-col gap-3">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-sm text-gray-600 dark:text-gray-300">Recomendadas:</span>
-              {recommended.map((r) => {
-                const badges = getServiceTypeBadges(r.types);
-                return (
-                  <div
-                    key={`rec-${r.id}`}
-                    className="flex flex-col gap-1 bg-indigo-100 dark:bg-indigo-700/20 px-3 py-2 rounded-lg border border-indigo-200 dark:border-indigo-600/30"
-                  >
-                    <div className="flex items-center gap-2">
-                      {r.logo ? (
-                        <Image
-                          src={`https://image.tmdb.org/t/p/w92${r.logo}`}
-                          alt={r.name}
-                          width={24}
-                          height={24}
-                          className="rounded"
-                        />
-                      ) : (
-                        <div className="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded" />
-                      )}
-                      <span className="text-sm font-semibold text-gray-900 dark:text-white">{r.name}</span>
-                      <span className="text-xs text-gray-600 dark:text-gray-400">({r.count})</span>
-                    </div>
-                    <div className="flex gap-1 flex-wrap">
-                      {badges.map((badge, idx) => (
-                        <span
-                          key={idx}
-                          className={`text-xs px-2 py-0.5 rounded-full text-white ${badge.color}`}
-                        >
-                          {badge.label}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+          <div className="mt-3 flex flex-col gap-4">
+            <span className="text-sm text-gray-600 dark:text-gray-300">Recomendadas por categoría:</span>
+
+            {recFlatrate.length > 0 && (
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Suscripción</h4>
+                <div className="flex items-stretch gap-2 flex-wrap">
+                  {recFlatrate.map((r) => {
+                    const badges = getServiceTypeBadges(r.types);
+                    return (
+                      <div
+                        key={`rec-flat-${r.id}`}
+                        className="flex flex-col gap-1 bg-green-100 dark:bg-green-700/20 px-3 py-2 rounded-lg border border-green-200 dark:border-green-600/30"
+                      >
+                        <div className="flex items-center gap-2">
+                          {r.logo ? (
+                            <Image
+                              src={`https://image.tmdb.org/t/p/w92${r.logo}`}
+                              alt={r.name}
+                              width={24}
+                              height={24}
+                              className="rounded"
+                            />
+                          ) : (
+                            <div className="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded" />)
+                          }
+                          <span className="text-sm font-semibold text-gray-900 dark:text-white">{r.name}</span>
+                          <span className="text-xs text-gray-600 dark:text-gray-400">({r.count})</span>
+                        </div>
+                        <div className="flex gap-1 flex-wrap">
+                          {badges.map((badge, idx) => (
+                            <span
+                              key={idx}
+                              className={`text-xs px-2 py-0.5 rounded-full text-white ${badge.color}`}
+                            >
+                              {badge.label}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {recRent.length > 0 && (
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Renta</h4>
+                <div className="flex items-stretch gap-2 flex-wrap">
+                  {recRent.map((r) => {
+                    const badges = getServiceTypeBadges(r.types);
+                    return (
+                      <div
+                        key={`rec-rent-${r.id}`}
+                        className="flex flex-col gap-1 bg-blue-100 dark:bg-blue-700/20 px-3 py-2 rounded-lg border border-blue-200 dark:border-blue-600/30"
+                      >
+                        <div className="flex items-center gap-2">
+                          {r.logo ? (
+                            <Image
+                              src={`https://image.tmdb.org/t/p/w92${r.logo}`}
+                              alt={r.name}
+                              width={24}
+                              height={24}
+                              className="rounded"
+                            />
+                          ) : (
+                            <div className="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded" />)
+                          }
+                          <span className="text-sm font-semibold text-gray-900 dark:text-white">{r.name}</span>
+                          <span className="text-xs text-gray-600 dark:text-gray-400">({r.count})</span>
+                        </div>
+                        <div className="flex gap-1 flex-wrap">
+                          {badges.map((badge, idx) => (
+                            <span
+                              key={idx}
+                              className={`text-xs px-2 py-0.5 rounded-full text-white ${badge.color}`}
+                            >
+                              {badge.label}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {recBuy.length > 0 && (
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Compra</h4>
+                <div className="flex items-stretch gap-2 flex-wrap">
+                  {recBuy.map((r) => {
+                    const badges = getServiceTypeBadges(r.types);
+                    return (
+                      <div
+                        key={`rec-buy-${r.id}`}
+                        className="flex flex-col gap-1 bg-purple-100 dark:bg-purple-700/20 px-3 py-2 rounded-lg border border-purple-200 dark:border-purple-600/30"
+                      >
+                        <div className="flex items-center gap-2">
+                          {r.logo ? (
+                            <Image
+                              src={`https://image.tmdb.org/t/p/w92${r.logo}`}
+                              alt={r.name}
+                              width={24}
+                              height={24}
+                              className="rounded"
+                            />
+                          ) : (
+                            <div className="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded" />)
+                          }
+                          <span className="text-sm font-semibold text-gray-900 dark:text-white">{r.name}</span>
+                          <span className="text-xs text-gray-600 dark:text-gray-400">({r.count})</span>
+                        </div>
+                        <div className="flex gap-1 flex-wrap">
+                          {badges.map((badge, idx) => (
+                            <span
+                              key={idx}
+                              className={`text-xs px-2 py-0.5 rounded-full text-white ${badge.color}`}
+                            >
+                              {badge.label}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {other.length > 0 && (
               <div>
