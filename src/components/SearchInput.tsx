@@ -8,7 +8,6 @@ interface SearchInputProps {
   onSubmit: () => void;
   onClear: () => void;
   placeholder?: string;
-  autoFocus?: boolean;
 }
 
 /** Barra de búsqueda reutilizable controlada por el padre. */
@@ -18,7 +17,6 @@ export default function SearchInput({
   onSubmit,
   onClear,
   placeholder = "Buscar...",
-  autoFocus = false,
 }: SearchInputProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +48,6 @@ export default function SearchInput({
         placeholder={placeholder}
         className="flex-1 py-3 font-normal text-base/normal text-stone-50 placeholder-stone-400 outline-none bg-transparent"
         autoComplete="off"
-        autoFocus={autoFocus}
       />
       {value && (
         <button

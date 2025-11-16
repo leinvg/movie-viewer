@@ -67,7 +67,7 @@ export default function TrendingCarousel({ items }: TrendingCarouselProps) {
     <>
       <MediaModal media={selectedMedia} onClose={() => setSelectedMedia(null)} />
 
-      <section className="space-y-3 px-4 sm:px-6 lg:px-8">
+      <section className="max-w-7xl mx-auto px-4 space-y-3">
         {/* Header con título y dots */}
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">

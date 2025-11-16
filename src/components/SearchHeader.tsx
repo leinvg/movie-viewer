@@ -33,7 +33,6 @@ export default function SearchHeader({ initialQuery = "" }: Props) {
         onSubmit={handleSubmit}
         onClear={handleClear}
         placeholder="Buscar películas o series"
-        autoFocus
       />
     </Header>
   );
