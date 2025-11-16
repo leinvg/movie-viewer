@@ -1,13 +1,21 @@
 // src/app/layout.tsx
 
-import type { Metadata } from "next";
 import "@/app/globals.css";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jakarta",
+});
+
 export const metadata: Metadata = {
   title: "Moviewer",
-  description: "A streaming platform recommender (TMDB API and JustWatch).",
+  description:
+    "Un recomendador de plataformas de streaming (TMDB and JustWatch).",
 };
 
 export default function RootLayout({
@@ -16,13 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className="scroll-smooth">
-      <body className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white antialiased flex flex-col overflow-x-hidden transition-colors">
+    <html
+      lang="es"
+      className={`${plusJakartaSans.variable} scroll-smooth antialiased`}
+    >
+      <body className=" bg-white dark:bg-neutral-950 text-gray-900 dark:text-stone-50 overflow-x-hidden transition-colors flex flex-col min-h-screen">
         <ThemeProvider />
-        <div className="flex flex-col min-h-screen">
-          {children}
-          <Footer />
-        </div>
+        {children}
+        <Footer />
       </body>
     </html>
   );

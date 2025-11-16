@@ -1,3 +1,5 @@
+// src/components/RegionSelector.tsx
+
 'use client';
 
 import { Region } from '@/store/appStore';

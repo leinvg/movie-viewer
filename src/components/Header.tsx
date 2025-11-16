@@ -1,16 +1,17 @@
+// src/components/Header.tsx
+
 "use client";
 
 import { useRouter } from "next/navigation";
 import useAppStore from "@/store/appStore";
 import ThemeToggle from "./ThemeToggle";
-import RegionSelector from "./RegionSelector";
 
 export default function Header({ children }: { children?: React.ReactNode }) {
   const router = useRouter();
   const { favorites } = useAppStore();
 
   return (
-    <header className="bg-gradient-to-r from-gray-950 to-gray-900 border-b border-indigo-900/30 text-white shadow-lg">
+    <header className="bg-neutral-950/80 border-b border-neutral-700 text-white">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-6">
         <div
           className="font-bold text-2xl cursor-pointer hover:text-indigo-400 transition-colors"
@@ -21,11 +22,8 @@ export default function Header({ children }: { children?: React.ReactNode }) {
 
         <div className="flex-1">{children}</div>
 
-        {/* Controles de tema y región */}
-        <div className="flex items-center gap-3">
-          <RegionSelector />
-          <ThemeToggle />
-        </div>
+        {/* Control de tema */}
+        <ThemeToggle />
 
         <button
           onClick={() => router.push("/favorites")}
