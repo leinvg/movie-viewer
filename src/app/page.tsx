@@ -2,7 +2,7 @@
 
 import SearchBox from "@/components/SearchBox";
 import Header from "@/components/Header";
-import TrendingCarousel from "@/components/TrendingCarousel";
+import Carousel from "@/components/Carousel";
 import { getTrendingAll } from "@/services/tmdb";
 
 export default async function Home() {
@@ -23,7 +23,7 @@ export default async function Home() {
 
         {/* Carrusel de trending */}
         <div className="pb-12">
-          <TrendingCarousel items={trending.results} />
+          <Carousel items={trending.results} title="Trending del día" showDots />
         </div>
       </main>
     </>

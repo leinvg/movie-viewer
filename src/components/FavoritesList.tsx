@@ -15,19 +15,22 @@ import {
 } from "@/utils/providerAggregator";
 
 // Helper para obtener badges de tipo de servicio
-const getServiceTypeBadges = (types: Set<'flatrate' | 'rent' | 'buy'>) => {
+const getServiceTypeBadges = (types: Set<"flatrate" | "rent" | "buy">) => {
   const badges: { label: string; color: string }[] = [];
-  
-  if (types.has('flatrate')) {
-    badges.push({ label: 'Suscripción', color: 'bg-green-600 dark:bg-green-700' });
+
+  if (types.has("flatrate")) {
+    badges.push({
+      label: "Suscripción",
+      color: "bg-green-600 dark:bg-green-700",
+    });
   }
-  if (types.has('rent')) {
-    badges.push({ label: 'Renta', color: 'bg-blue-600 dark:bg-blue-700' });
+  if (types.has("rent")) {
+    badges.push({ label: "Renta", color: "bg-blue-600 dark:bg-blue-700" });
   }
-  if (types.has('buy')) {
-    badges.push({ label: 'Compra', color: 'bg-purple-600 dark:bg-purple-700' });
+  if (types.has("buy")) {
+    badges.push({ label: "Compra", color: "bg-purple-600 dark:bg-purple-700" });
   }
-  
+
   return badges;
 };
 
@@ -45,7 +48,8 @@ export default function FavoritesList() {
     }
 
     let mounted = true;
-    const cacheKey = (type: string, id: number, reg: string) => `mv_providers_${type}_${id}_${reg}`;
+    const cacheKey = (type: string, id: number, reg: string) =>
+      `mv_providers_${type}_${id}_${reg}`;
 
     const fetchProvidersFor = async (
       m: TMDBMedia
@@ -73,11 +77,7 @@ export default function FavoritesList() {
         const responses = await Promise.all(
           favorites.map((it) => fetchProvidersFor(it))
         );
-        const stats = aggregateProviders(
-          favorites,
-          responses,
-          region
-        );
+        const stats = aggregateProviders(favorites, responses, region);
         if (mounted) setProviderStats(stats);
       } finally {
         if (mounted) setProvidersLoading(false);
@@ -92,22 +92,28 @@ export default function FavoritesList() {
   }, [favorites, region]);
 
   if (!favorites.length)
-    return <div className="text-gray-600 dark:text-gray-500">No tienes favoritos aún.</div>;
+    return (
+      <div className="text-gray-600 dark:text-gray-500">
+        No tienes favoritos aún.
+      </div>
+    );
 
   const recommended = getRecommendedProviders(providerStats);
   const other = getOtherProviders(providerStats);
-  const recFlatrate = recommended.filter((r) => r.types.has('flatrate'));
-  const recRent = recommended.filter((r) => r.types.has('rent'));
-  const recBuy = recommended.filter((r) => r.types.has('buy'));
+  const recFlatrate = recommended.filter((r) => r.types.has("flatrate"));
+  const recRent = recommended.filter((r) => r.types.has("rent"));
+  const recBuy = recommended.filter((r) => r.types.has("buy"));
 
   return (
     <>
-      <MediaModal media={selectedMedia} onClose={() => setSelectedMedia(null)} />
+      <MediaModal
+        media={selectedMedia}
+        onClose={() => setSelectedMedia(null)}
+      />
 
       <div className="mb-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-          Recomendación de plataformas (región:{" "}
-          {region})
+          Recomendación de plataformas (región: {region})
         </h3>
         {providersLoading ? (
           <p className="text-sm text-gray-400">
@@ -115,11 +121,15 @@ export default function FavoritesList() {
           </p>
         ) : providerStats.length ? (
           <div className="mt-3 flex flex-col gap-4">
-            <span className="text-sm text-gray-600 dark:text-gray-300">Recomendadas por categoría:</span>
+            <span className="text-sm text-gray-600 dark:text-gray-300">
+              Recomendadas por categoría:
+            </span>
 
             {recFlatrate.length > 0 && (
               <div>
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Suscripción</h4>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                  Suscripción
+                </h4>
                 <div className="flex items-stretch gap-2 flex-wrap">
                   {recFlatrate.map((r) => {
                     const badges = getServiceTypeBadges(r.types);
@@ -138,10 +148,14 @@ export default function FavoritesList() {
                               className="rounded"
                             />
                           ) : (
-                            <div className="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded" />)
-                          }
-                          <span className="text-sm font-semibold text-gray-900 dark:text-white">{r.name}</span>
-                          <span className="text-xs text-gray-600 dark:text-gray-400">({r.count})</span>
+                            <div className="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded" />
+                          )}
+                          <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                            {r.name}
+                          </span>
+                          <span className="text-xs text-gray-600 dark:text-gray-400">
+                            ({r.count})
+                          </span>
                         </div>
                         <div className="flex gap-1 flex-wrap">
                           {badges.map((badge, idx) => (
@@ -162,7 +176,9 @@ export default function FavoritesList() {
 
             {recRent.length > 0 && (
               <div>
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Renta</h4>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                  Renta
+                </h4>
                 <div className="flex items-stretch gap-2 flex-wrap">
                   {recRent.map((r) => {
                     const badges = getServiceTypeBadges(r.types);
@@ -181,10 +197,14 @@ export default function FavoritesList() {
                               className="rounded"
                             />
                           ) : (
-                            <div className="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded" />)
-                          }
-                          <span className="text-sm font-semibold text-gray-900 dark:text-white">{r.name}</span>
-                          <span className="text-xs text-gray-600 dark:text-gray-400">({r.count})</span>
+                            <div className="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded" />
+                          )}
+                          <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                            {r.name}
+                          </span>
+                          <span className="text-xs text-gray-600 dark:text-gray-400">
+                            ({r.count})
+                          </span>
                         </div>
                         <div className="flex gap-1 flex-wrap">
                           {badges.map((badge, idx) => (
@@ -205,7 +225,9 @@ export default function FavoritesList() {
 
             {recBuy.length > 0 && (
               <div>
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Compra</h4>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                  Compra
+                </h4>
                 <div className="flex items-stretch gap-2 flex-wrap">
                   {recBuy.map((r) => {
                     const badges = getServiceTypeBadges(r.types);
@@ -224,10 +246,14 @@ export default function FavoritesList() {
                               className="rounded"
                             />
                           ) : (
-                            <div className="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded" />)
-                          }
-                          <span className="text-sm font-semibold text-gray-900 dark:text-white">{r.name}</span>
-                          <span className="text-xs text-gray-600 dark:text-gray-400">({r.count})</span>
+                            <div className="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded" />
+                          )}
+                          <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                            {r.name}
+                          </span>
+                          <span className="text-xs text-gray-600 dark:text-gray-400">
+                            ({r.count})
+                          </span>
                         </div>
                         <div className="flex gap-1 flex-wrap">
                           {badges.map((badge, idx) => (
@@ -248,7 +274,9 @@ export default function FavoritesList() {
 
             {other.length > 0 && (
               <div>
-                <span className="text-sm text-gray-600 dark:text-gray-400">Otras plataformas:</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Otras plataformas:
+                </span>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {other.map((p) => {
                     const badges = getServiceTypeBadges(p.types);
@@ -269,8 +297,12 @@ export default function FavoritesList() {
                           ) : (
                             <div className="w-5 h-5 bg-gray-300 dark:bg-gray-700 rounded" />
                           )}
-                          <span className="text-sm text-gray-900 dark:text-white">{p.name}</span>
-                          <span className="text-xs text-gray-600 dark:text-gray-400">({p.count})</span>
+                          <span className="text-sm text-gray-900 dark:text-white">
+                            {p.name}
+                          </span>
+                          <span className="text-xs text-gray-600 dark:text-gray-400">
+                            ({p.count})
+                          </span>
                         </div>
                         <div className="flex gap-1 flex-wrap ml-7">
                           {badges.map((badge, idx) => (
