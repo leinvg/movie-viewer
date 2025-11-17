@@ -30,15 +30,16 @@ export default function SearchInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="flex-1 py-4 pl-6 pr-25.5 text-base/normal text-stone-100 bg-neutral-800 rounded-full outline-none inset-ring inset-ring-neutral-700"
+        className="w-full py-4 pl-6 pr-26 text-base placeholder-stone-100/70 bg-neutral-800 rounded-full outline-none inset-ring inset-ring-neutral-700"
         autoComplete="off"
+        enterKeyHint="search"
       />
       {value && (
         <button
           type="button"
           onClick={onClear}
           aria-label="Limpiar búsqueda"
-          className="absolute right-14 p-2 bg-neutral-800 text-stone-100 rounded-full outline-none transition-all cursor-pointer hover:bg-neutral-700 focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800"
+          className="absolute right-14 p-2.5 bg-neutral-800 text-stone-100 rounded-full outline-none transition-all cursor-pointer hover:bg-neutral-700 focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -56,7 +57,7 @@ export default function SearchInput({
       <button
         type="submit"
         aria-label="Buscar"
-        className="absolute right-2.5 p-2 bg-neutral-200 text-stone-900 rounded-full transition-all cursor-pointer outline-none focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800"
+        className="absolute right-2 p-2.5 bg-neutral-200 text-stone-900 rounded-full transition-all cursor-pointer outline-none focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

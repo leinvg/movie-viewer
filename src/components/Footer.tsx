@@ -5,7 +5,7 @@ export default function Footer() {
 
   return (
     <footer className="text-white/50 text-sm">
-      <div className="container max-w-5xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="container max-w-5xl mx-auto px-4 md:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center">
           <div className="flex gap-1 text-xs">
             <p>© {currentYear}</p>
@@ -29,7 +29,6 @@ export default function Footer() {
             </a>
           </div>
         </div>
-
         <a
           href="https://github.com/leinvg"
           target="_blank"

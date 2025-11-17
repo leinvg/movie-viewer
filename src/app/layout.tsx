@@ -14,8 +14,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: "Moviewer",
-  description:
-    "Un recomendador de plataformas de streaming (TMDB and JustWatch).",
+  description: "Guía de plataformas de streaming (TMDB y JustWatch).",
 };
 
 export default function RootLayout({
@@ -28,10 +27,10 @@ export default function RootLayout({
       lang="es"
       className={`${plusJakartaSans.variable} scroll-smooth antialiased`}
     >
-      <body className=" bg-white dark:bg-neutral-900 text-gray-900 dark:text-stone-50 overflow-x-hidden transition-colors flex flex-col min-h-screen">
+      <body className="bg-neutral-100 dark:bg-neutral-900 text-black dark:text-stone-100 overflow-x-hidden transition-colors flex flex-col min-h-screen">
         <ThemeProvider />
         {children}
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );

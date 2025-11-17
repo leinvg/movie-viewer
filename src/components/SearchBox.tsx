@@ -2,22 +2,66 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SearchInput from "./SearchInput";
 
+const SUFFIXES = [" por película…", " por serie…", " por persona…"];
+const BASE_TEXT = "Buscar";
+const ANIMATION_CONFIG = {
+  initialDelay: 500,
+  typingSpeed: 50,
+  erasingSpeed: 30,
+  pauseAfterTyping: 1000,
+  pauseBetweenCycles: 300,
+};
+
 export default function SearchBox() {
   const [query, setQuery] = useState("");
+  const [placeholder, setPlaceholder] = useState(BASE_TEXT);
   const router = useRouter();
 
-  const handleSubmit = () => {
-    const trimmedQuery = query.trim();
-    if (!trimmedQuery) return;
-    router.push(`/search?q=${encodeURIComponent(trimmedQuery)}`);
-  };
+  useEffect(() => {
+    if (query) return;
 
-  const handleClear = () => {
-    setQuery("");
+    let currentIndex = 0;
+    let currentLength = 0;
+    let isErasing = false;
+    let timeoutId: NodeJS.Timeout;
+
+    const animate = () => {
+      const suffix = SUFFIXES[currentIndex];
+
+      if (!isErasing) {
+        if (currentLength < suffix.length) {
+          currentLength++;
+          setPlaceholder(BASE_TEXT + suffix.slice(0, currentLength));
+          timeoutId = setTimeout(animate, ANIMATION_CONFIG.typingSpeed);
+        } else {
+          isErasing = true;
+          timeoutId = setTimeout(animate, ANIMATION_CONFIG.pauseAfterTyping);
+        }
+      } else {
+        if (currentLength > 0) {
+          currentLength--;
+          setPlaceholder(BASE_TEXT + suffix.slice(0, currentLength));
+          timeoutId = setTimeout(animate, ANIMATION_CONFIG.erasingSpeed);
+        } else {
+          currentIndex = (currentIndex + 1) % SUFFIXES.length;
+          isErasing = false;
+          timeoutId = setTimeout(animate, ANIMATION_CONFIG.pauseBetweenCycles);
+        }
+      }
+    };
+
+    timeoutId = setTimeout(animate, ANIMATION_CONFIG.initialDelay);
+    return () => clearTimeout(timeoutId);
+  }, [query]);
+
+  const handleSubmit = () => {
+    const trimmed = query.trim();
+    if (!trimmed) return;
+    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
   };
 
   return (
@@ -25,8 +69,8 @@ export default function SearchBox() {
       value={query}
       onChange={setQuery}
       onSubmit={handleSubmit}
-      onClear={handleClear}
-      placeholder="Buscar títulos..."
+      onClear={() => setQuery("")}
+      placeholder={placeholder}
     />
   );
 }
