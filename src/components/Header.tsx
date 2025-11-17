@@ -27,12 +27,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
 
         <button
           onClick={() => router.push("/favorites")}
-          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 px-3 sm:px-4 py-2 rounded-lg transition-colors font-semibold text-sm"
+          className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 px-3 sm:px-4 py-2 rounded-lg transition-colors font-semibold text-sm"
           aria-label="Ir a favoritos"
         >
           <span>⭐</span>
           <span className="hidden sm:inline">Favoritos</span>
-          <span className="hidden sm:inline bg-indigo-800 px-2 py-0.5 rounded text-xs font-bold">
+          <span className="hidden sm:inline bg-sky-800 px-2 py-0.5 rounded text-xs font-bold">
             {favorites.length}
           </span>
         </button>

@@ -11,22 +11,20 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <main className="flex-1 bg-gray-50 dark:bg-gray-900">
+      <main className="flex-1 bg-gray-50 dark:bg-neutral-950">
         <div className="flex items-center justify-center px-4 py-24">
           <div className="w-full max-w-2xl">
-            <h1 className="text-3xl font-semibold text-center mb-12 text-gray-900 dark:text-stone-50">
-              TU PLATAFORMA DE STREAMING IDEAL
-            </h1>
             <SearchBox />
           </div>
         </div>
-
-        {/* Carrusel de trending */}
         <div className="pb-12">
-          <Carousel items={trending.results} title="Trending del día" showDots />
+          <Carousel
+            items={trending.results}
+            title="Trending del día"
+            showDots
+          />
         </div>
       </main>
     </>
   );
 }
-

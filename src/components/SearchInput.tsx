@@ -26,27 +26,14 @@ export default function SearchInput({
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full flex items-center text-stone-400 bg-neutral-900 inset-ring-1 inset-ring-neutral-800 rounded-lg overflow-hidden focus-within:inset-ring-2 focus-within:inset-ring-slate-500 transition-all"
+      className="relative flex items-center w-full text-stone-400"
     >
-      <div className="py-3.5 px-4">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          className="size-5 fill-none stroke-current stroke-[1.5px]"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-          />
-        </svg>
-      </div>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="flex-1 py-3 font-normal text-base/normal text-stone-50 placeholder-stone-400 outline-none bg-transparent"
+        className="flex-1 py-4 pl-8 pr-28 text-base/normal text-stone-50 bg-neutral-800 rounded-full outline-none focus-visible:inset-ring-2 focus-visible:inset-ring-white/80"
         autoComplete="off"
       />
       {value && (
@@ -54,12 +41,12 @@ export default function SearchInput({
           type="button"
           onClick={onClear}
           aria-label="Limpiar búsqueda"
-          className="p-3 hover:text-stone-50 transition-colors cursor-pointer"
+          className="absolute right-17 p-2.5 translate-x-1/2 rounded-full outline-none transition-colors cursor-pointer hover:text-stone-50 focus:text-stone-50 focus-visible:inset-ring-2 focus-visible:inset-ring-white/80"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            className="size-6 fill-none stroke-current stroke-[1.5px]"
+            className="size-5 fill-none stroke-current stroke-[2px]"
           >
             <path
               strokeLinecap="round"
@@ -69,6 +56,23 @@ export default function SearchInput({
           </svg>
         </button>
       )}
+      <button
+        type="submit"
+        aria-label="Buscar"
+        className="absolute right-7 p-2.5 translate-x-1/2 text-stone-50 rounded-full outline-none transition-colors cursor-pointer focus:text-stone-50 focus-visible:inset-ring-2 focus-visible:inset-ring-white/80"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          className="size-5 fill-none stroke-current stroke-[2px]"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+          />
+        </svg>
+      </button>
     </form>
   );
 }

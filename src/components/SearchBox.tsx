@@ -26,7 +26,7 @@ export default function SearchBox() {
       onChange={setQuery}
       onSubmit={handleSubmit}
       onClear={handleClear}
-      placeholder="Buscar..."
+      placeholder="Busca una película, serie o persona..."
     />
   );
 }
