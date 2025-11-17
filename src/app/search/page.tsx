@@ -1,4 +1,3 @@
-
 import SearchHeader from "@/components/SearchHeader";
 import SearchResults from "@/components/SearchResults";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -17,13 +16,18 @@ export default async function SearchPage({ searchParams }: Props) {
   let initial: SearchMediaResult = { results: [], hasMore: false, nextPage: 1 };
   if (q) {
     // Use centralized service that applies filtering and pagination rules.
-    initial = await fetchFilteredSearch(q, 1, APP_CONFIG.streaming.DEFAULT_SEARCH_LIMIT, {
-      maxPagesToScan: APP_CONFIG.streaming.MAX_PAGES_SCAN,
-    });
+    initial = await fetchFilteredSearch(
+      q,
+      1,
+      APP_CONFIG.streaming.DEFAULT_SEARCH_LIMIT,
+      {
+        maxPagesToScan: APP_CONFIG.streaming.MAX_PAGES_SCAN,
+      }
+    );
   }
 
   return (
-    <main className="flex-1 bg-gray-50 dark:bg-gray-900">
+    <main className="flex-1">
       <SearchHeader initialQuery={q} />
       <div className="p-4 max-w-7xl mx-auto">
         {q ? (

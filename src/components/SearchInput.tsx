@@ -24,16 +24,13 @@ export default function SearchInput({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="relative flex items-center w-full text-stone-400"
-    >
+    <form onSubmit={handleSubmit} className="relative flex items-center w-full">
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="flex-1 py-4 pl-8 pr-28 text-base/normal text-stone-50 bg-neutral-800 rounded-full outline-none focus-visible:inset-ring-2 focus-visible:inset-ring-white/80"
+        className="flex-1 py-4 pl-6 pr-25.5 text-base/normal text-stone-100 bg-neutral-800 rounded-full outline-none inset-ring inset-ring-neutral-700"
         autoComplete="off"
       />
       {value && (
@@ -41,7 +38,7 @@ export default function SearchInput({
           type="button"
           onClick={onClear}
           aria-label="Limpiar búsqueda"
-          className="absolute right-17 p-2.5 translate-x-1/2 rounded-full outline-none transition-colors cursor-pointer hover:text-stone-50 focus:text-stone-50 focus-visible:inset-ring-2 focus-visible:inset-ring-white/80"
+          className="absolute right-14 p-2 bg-neutral-800 text-stone-100 rounded-full outline-none transition-all cursor-pointer hover:bg-neutral-700 focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +56,7 @@ export default function SearchInput({
       <button
         type="submit"
         aria-label="Buscar"
-        className="absolute right-7 p-2.5 translate-x-1/2 text-stone-50 rounded-full outline-none transition-colors cursor-pointer focus:text-stone-50 focus-visible:inset-ring-2 focus-visible:inset-ring-white/80"
+        className="absolute right-2.5 p-2 bg-neutral-200 text-stone-900 rounded-full transition-all cursor-pointer outline-none focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

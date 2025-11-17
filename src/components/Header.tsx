@@ -11,7 +11,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
   const { favorites } = useAppStore();
 
   return (
-    <header className="bg-neutral-950/80 border-b border-neutral-700 text-white">
+    <header className="bg-neutral-900/80 border-b border-neutral-700 text-white">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-2 sm:gap-4 md:gap-6">
         <div
           className="font-bold text-xl sm:text-2xl cursor-pointer hover:text-indigo-400 transition-colors flex-shrink-0"

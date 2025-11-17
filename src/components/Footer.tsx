@@ -4,25 +4,26 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-r from-gray-950 to-gray-900 border-t border-indigo-900/30 text-gray-400 text-sm mt-auto">
-      <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <p>© {currentYear} Moviewer</p>
-          <div className="flex gap-4 text-xs">
+    <footer className="text-white/50 text-sm">
+      <div className="container max-w-5xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center">
+          <div className="flex gap-1 text-xs">
+            <p>© {currentYear}</p>
+            <span>Powered by</span>
             <a
               href="https://www.themoviedb.org/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-indigo-400 transition-colors"
+              className="hover:text-white transition-colors"
             >
-              Powered by TMDB
+              TMDB
             </a>
             <span>•</span>
             <a
               href="https://www.justwatch.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-indigo-400 transition-colors"
+              className="hover:text-white transition-colors"
             >
               JustWatch
             </a>
@@ -33,9 +34,9 @@ export default function Footer() {
           href="https://github.com/leinvg"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 hover:text-indigo-400 transition-colors"
+          className="flex items-center gap-2 hover:text-white transition-colors text-sm"
         >
-          <span>@leinvg</span>
+          <span>Github @leinvg</span>
           <span>→</span>
         </a>
       </div>
