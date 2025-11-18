@@ -30,7 +30,9 @@ export default function SearchInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full py-4 pl-6 pr-26 text-base placeholder-stone-100/70 bg-neutral-800 rounded-full outline-none inset-ring inset-ring-neutral-700"
+        className={`w-full py-4 pl-6 text-base placeholder-stone-100/70 bg-neutral-800 rounded-full outline-none inset-ring inset-ring-neutral-700 transition-all ${
+          value ? "pr-26" : "pr-15"
+        }`}
         autoComplete="off"
         enterKeyHint="search"
       />

@@ -5,10 +5,10 @@ import FavoritesLink from "@/components/FavoritesLink";
 
 export default async function Home() {
   return (
-    <main className="flex-1">
-      <div className="container mx-auto px-4 md:px-8">
-        <section className="w-full py-[20vh] flex flex-col items-center 2xl:py-64 gap-10 md:gap-12">
-          <div className="px-6 flex flex-col items-center gap-2 md:gap-3 text-center">
+    <main className="flex-1 flex">
+      <div className="container mx-auto px-8 md:px-12 flex">
+        <section className="w-full flex flex-col items-center justify-center 2xl:py-64 gap-10 md:gap-12">
+          <div className="flex flex-col items-center gap-2 md:gap-3 text-center">
             <h1 className="text-3xl md:text-4xl leading-tight tracking-tight font-medium">
               Guía de <span className="hidden md:inline">Plataformas </span>
               Streaming
