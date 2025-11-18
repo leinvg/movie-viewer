@@ -27,10 +27,10 @@ export default function RootLayout({
       lang="es"
       className={`${plusJakartaSans.variable} scroll-smooth antialiased`}
     >
-      <body className="bg-neutral-100 dark:bg-neutral-900 text-black dark:text-stone-100 overflow-x-hidden transition-colors flex flex-col min-h-screen">
+      <body className="bg-neutral-100 dark:bg-neutral-900 text-stone-900 dark:text-stone-100 overflow-x-hidden transition-colors flex flex-col min-h-screen">
         <ThemeProvider />
         {children}
-        {/* <Footer /> */}
+        <Footer />
       </body>
     </html>
   );

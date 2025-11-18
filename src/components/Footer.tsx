@@ -1,43 +1,57 @@
+// src/components/Footer.tsx
+
 "use client";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="text-white/50 text-sm">
-      <div className="container max-w-5xl mx-auto px-4 md:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center">
-          <div className="flex gap-1 text-xs">
-            <p>© {currentYear}</p>
-            <span>Powered by</span>
+    <footer className="bg-neutral-950/40 dark:text-stone-100/40">
+      <div className="container mx-auto px-4 md:px-8">
+        <section className="px-6 py-10 md:py-12 flex flex-col text-xs items-center text-center gap-3 **:data-link:hover:text-stone-100 **:data-link:transition-colors">
+          <div className="flex items-center flex-wrap justify-center gap-1.5">
+            <p>Impulsado por</p>
             <a
               href="https://www.themoviedb.org/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
+              data-link
             >
               TMDB
             </a>
-            <span>•</span>
+            <p>y</p>
             <a
               href="https://www.justwatch.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
+              data-link
             >
               JustWatch
             </a>
           </div>
-        </div>
-        <a
-          href="https://github.com/leinvg"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 hover:text-white transition-colors text-sm"
-        >
-          <span>Github @leinvg</span>
-          <span>→</span>
-        </a>
+          <div className="flex items-center gap-1.5 flex-wrap justify-center">
+            <p>© {currentYear}</p>
+            <p>Leonardo Alain</p>
+            <p>•</p>
+            <a
+              href="https://github.com/leinvg"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-link
+            >
+              GitHub
+            </a>
+            <p>•</p>
+            <a
+              href="https://linkedin.com/in/leonardo-alain-60a942126/"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-link
+            >
+              LinkedIn
+            </a>
+          </div>
+        </section>
       </div>
     </footer>
   );
