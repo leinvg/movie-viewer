@@ -1,3 +1,5 @@
+// src/components/MediaModal.tsx
+
 "use client";
 
 import { useEffect } from "react";
@@ -15,14 +17,18 @@ interface MediaModalProps {
 
 export default function MediaModal({ media, onClose }: MediaModalProps) {
   const mediaType = (media?.media_type as "movie" | "tv" | null) || null;
-  const { media: detailedMedia, credits } = useFetchMedia(mediaType, media?.id ?? null);
+  const { media: detailedMedia, credits } = useFetchMedia(
+    mediaType,
+    media?.id ?? null
+  );
 
   useEffect(() => {
     // Solo bloquear scroll si el modal está abierto
     if (!media) return;
 
     // Guardar el valor actual de overflow antes de bloquearlo
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
     const originalOverflow = window.getComputedStyle(document.body).overflow;
     const originalPadding = window.getComputedStyle(document.body).paddingRight;
 
@@ -46,7 +52,10 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
   const title = isMovie ? movie.title : tv.name;
   const original = isMovie ? movie.original_title : tv.original_name;
   const releaseDate = isMovie ? movie.release_date : tv.first_air_date;
-  const backdropUrl = getImagePath(displayMedia.backdrop_path, TmdbImageSize.W780);
+  const backdropUrl = getImagePath(
+    displayMedia.backdrop_path,
+    TmdbImageSize.W780
+  );
 
   return (
     <div
@@ -60,9 +69,7 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
         className="absolute inset-x-0 bottom-0 top-20 bg-gray-950 overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Scrollable content */}
         <div className="overflow-y-auto flex-1 w-full">
-          {/* Close button */}
           <button
             onClick={onClose}
             aria-label="Cerrar"
@@ -71,7 +78,6 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
             ✕
           </button>
 
-          {/* Backdrop */}
           {backdropUrl && (
             <div className="relative w-full h-64 md:h-80 flex-shrink-0">
               <Image
@@ -95,7 +101,8 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
             <div className="flex flex-wrap gap-4 mb-6 text-sm text-gray-300">
               {releaseDate && (
                 <div>
-                  <span className="font-semibold">Lanzamiento:</span> {releaseDate}
+                  <span className="font-semibold">Lanzamiento:</span>{" "}
+                  {releaseDate}
                 </div>
               )}
               {displayMedia.vote_average > 0 && (
@@ -106,7 +113,8 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
               )}
               {displayMedia.vote_count > 0 && (
                 <div>
-                  <span className="font-semibold">Votos:</span> {displayMedia.vote_count.toLocaleString()}
+                  <span className="font-semibold">Votos:</span>{" "}
+                  {displayMedia.vote_count.toLocaleString()}
                 </div>
               )}
               {displayMedia.original_language && (
@@ -141,7 +149,9 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
                 <div className="mt-2 bg-gray-800 rounded-full h-2 w-32">
                   <div
                     className="bg-indigo-500 h-2 rounded-full transition-all"
-                    style={{ width: `${Math.min(displayMedia.popularity * 2, 100)}%` }}
+                    style={{
+                      width: `${Math.min(displayMedia.popularity * 2, 100)}%`,
+                    }}
                   />
                 </div>
               </div>
@@ -151,12 +161,14 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
             {displayMedia.overview && (
               <div>
                 <h2 className="text-xl font-semibold mb-3">Sinopsis</h2>
-                <p className="text-gray-300 leading-relaxed">{displayMedia.overview}</p>
+                <p className="text-gray-300 leading-relaxed">
+                  {displayMedia.overview}
+                </p>
               </div>
             )}
 
             {/* Series-only info */}
-            {!isMovie && (tv.origin_country && tv.origin_country.length > 0) && (
+            {!isMovie && tv.origin_country && tv.origin_country.length > 0 && (
               <div className="mt-6 pt-6 border-t border-gray-700">
                 <span className="font-semibold text-sm">Países de origen:</span>
                 <p className="text-gray-300 mt-2">
@@ -169,7 +181,9 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
             {isMovie && typeof movie.video !== "undefined" && (
               <div className="mt-6 pt-6 border-t border-gray-700">
                 <span className="font-semibold text-sm">Contiene video:</span>
-                <p className="text-gray-300 mt-2">{movie.video ? "Sí" : "No"}</p>
+                <p className="text-gray-300 mt-2">
+                  {movie.video ? "Sí" : "No"}
+                </p>
               </div>
             )}
 
@@ -178,33 +192,32 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
               <div className="mt-6 pt-6 border-t border-gray-700">
                 <h2 className="text-xl font-semibold mb-4">Elenco</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                  {credits.cast.slice(0, APP_CONFIG.credits.DISPLAY_LIMIT).map((person) => (
-                    <div
-                      key={`cast-${person.id}`}
-                      className="text-center"
-                    >
-                      {person.profile_path ? (
-                        <div className="relative w-full aspect-[2/3] mb-2 rounded-lg overflow-hidden">
-                          <Image
-                            src={`https://image.tmdb.org/t/p/w185${person.profile_path}`}
-                            alt={person.name}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      ) : (
-                        <div className="w-full aspect-[2/3] mb-2 rounded-lg bg-gray-700 flex items-center justify-center">
-                          <span className="text-gray-400">No foto</span>
-                        </div>
-                      )}
-                      <p className="text-sm font-semibold text-white truncate">
-                        {person.name}
-                      </p>
-                      <p className="text-xs text-gray-400 truncate">
-                        {person.character}
-                      </p>
-                    </div>
-                  ))}
+                  {credits.cast
+                    .slice(0, APP_CONFIG.credits.DISPLAY_LIMIT)
+                    .map((person) => (
+                      <div key={`cast-${person.id}`} className="text-center">
+                        {person.profile_path ? (
+                          <div className="relative w-full aspect-[2/3] mb-2 rounded-lg overflow-hidden">
+                            <Image
+                              src={`https://image.tmdb.org/t/p/w185${person.profile_path}`}
+                              alt={person.name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-full aspect-[2/3] mb-2 rounded-lg bg-gray-700 flex items-center justify-center">
+                            <span className="text-gray-400">No foto</span>
+                          </div>
+                        )}
+                        <p className="text-sm font-semibold text-white truncate">
+                          {person.name}
+                        </p>
+                        <p className="text-xs text-gray-400 truncate">
+                          {person.character}
+                        </p>
+                      </div>
+                    ))}
                 </div>
               </div>
             )}
@@ -215,7 +228,14 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
                 <h2 className="text-xl font-semibold mb-4">Equipo</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {credits.crew
-                    .filter((person) => (person.job ? (APP_CONFIG.credits.PRIORITY_JOBS as unknown as string[]).includes(person.job) : false))
+                    .filter((person) =>
+                      person.job
+                        ? (
+                            APP_CONFIG.credits
+                              .PRIORITY_JOBS as unknown as string[]
+                          ).includes(person.job)
+                        : false
+                    )
                     .slice(0, APP_CONFIG.credits.DISPLAY_LIMIT)
                     .map((person) => (
                       <div

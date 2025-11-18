@@ -16,8 +16,12 @@ const ANIMATION_CONFIG = {
   pauseBetweenCycles: 300,
 };
 
-export default function SearchBox() {
-  const [query, setQuery] = useState("");
+interface SearchBoxProps {
+  initialQuery?: string;
+}
+
+export default function SearchBox({ initialQuery = "" }: SearchBoxProps) {
+  const [query, setQuery] = useState(initialQuery);
   const [placeholder, setPlaceholder] = useState(BASE_TEXT);
   const router = useRouter();
 

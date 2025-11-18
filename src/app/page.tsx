@@ -2,12 +2,15 @@
 
 import SearchBox from "@/components/SearchBox";
 import FavoritesLink from "@/components/FavoritesLink";
+import Header from "@/components/Header";
 
 export default async function Home() {
   return (
-    <main className="flex-1 flex">
+    <>
+      <Header variant="minimal" />
+      <main className="flex-1 flex">
       <div className="container mx-auto px-8 md:px-12 flex">
-        <section className="w-full flex flex-col items-center justify-center 2xl:py-64 gap-10 md:gap-12">
+        <section className="py-30 w-full flex flex-col items-center justify-center 2xl:py-64 gap-10 md:gap-12">
           <div className="flex flex-col items-center gap-2 md:gap-3 text-center">
             <h1 className="text-3xl md:text-4xl leading-tight tracking-tight font-medium">
               Guía de <span className="hidden md:inline">Plataformas </span>
@@ -24,5 +27,6 @@ export default async function Home() {
         </section>
       </div>
     </main>
+    </>
   );
 }
