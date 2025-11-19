@@ -10,7 +10,6 @@ interface SearchInputProps {
   placeholder?: string;
 }
 
-/** Barra de búsqueda reutilizable controlada por el padre. */
 export default function SearchInput({
   value,
   onChange,
@@ -30,7 +29,7 @@ export default function SearchInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`w-full py-4 pl-6 text-base placeholder-stone-100/70 bg-neutral-800 rounded-full outline-none inset-ring inset-ring-neutral-700 transition-all ${
+        className={`w-full py-4 pl-6 text-base placeholder-stone-900/60 dark:placeholder-stone-100/70 bg-neutral-200 dark:bg-neutral-800 rounded-full outline-none inset-ring inset-ring-neutral-300 dark:inset-ring dark:inset-ring-neutral-700 transition-all ${
           value ? "pr-26" : "pr-15"
         }`}
         autoComplete="off"
@@ -41,7 +40,7 @@ export default function SearchInput({
           type="button"
           onClick={onClear}
           aria-label="Limpiar búsqueda"
-          className="absolute right-14 p-2.5 bg-neutral-800 text-stone-100 rounded-full outline-none transition-all cursor-pointer hover:bg-neutral-700 focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800"
+          className="absolute right-14 p-2.5 text-stone-900/60 hover:text-stone-900 bg-neutral-200 dark:bg-neutral-800 dark:text-stone-100/70 rounded-full outline-none transition-all cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-700 focus-visible:ring-2 focus-visible:ring-blue-500"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +58,7 @@ export default function SearchInput({
       <button
         type="submit"
         aria-label="Buscar"
-        className="absolute right-2 p-2.5 bg-neutral-200 text-stone-900 rounded-full transition-all cursor-pointer outline-none focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800"
+        className="absolute right-2 p-2.5 bg-neutral-700 dark:bg-neutral-300 text-stone-100 dark:text-stone-900 rounded-full transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-200 dark:focus-visible:ring-offset-neutral-800"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

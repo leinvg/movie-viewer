@@ -1,35 +1,61 @@
-'use client';
+// src/components/ThemeToggle.tsx
 
-import useAppStore from '@/store/appStore';
-import { useEffect } from 'react';
+"use client";
 
-/**
- * Componente que proporciona un botón para alternar entre tema claro y oscuro.
- * Sincroniza automáticamente con el atributo `dark` del documento.
- */
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+
 export default function ThemeToggle() {
-  const { theme, toggleTheme } = useAppStore();
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  // Aplicar clase 'dark' al documento cuando cambia el tema
   useEffect(() => {
-    const htmlElement = document.documentElement;
-    if (theme === 'dark') {
-      htmlElement.classList.add('dark');
-      htmlElement.style.colorScheme = 'dark';
-    } else {
-      htmlElement.classList.remove('dark');
-      htmlElement.style.colorScheme = 'light';
-    }
-  }, [theme]);
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="p-2.5 rounded-full w-10 h-10" aria-hidden="true" />;
+  }
+
+  const toggleTheme = () => {
+    const newTheme = resolvedTheme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+  };
 
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-yellow-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-      aria-label={`Cambiar a tema ${theme === 'light' ? 'oscuro' : 'claro'}`}
-      title={`Tema actual: ${theme === 'light' ? 'Claro' : 'Oscuro'}`}
+      className="p-2.5 rounded-full text-stone-900/60 dark:text-stone-100/70 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-neutral-300 dark:hover:bg-neutral-700 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all cursor-pointer"
+      aria-label={`Cambiar a tema ${
+        resolvedTheme === "light" ? "oscuro" : "claro"
+      }`}
+      title={`Tema actual: ${resolvedTheme === "light" ? "Claro" : "Oscuro"}`}
     >
-      {theme === 'light' ? '🌙' : '☀️'}
+      {resolvedTheme === "light" ? (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          className="size-5 fill-none stroke-current stroke-[2px]"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+          />
+        </svg>
+      ) : (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          className="size-5 fill-none stroke-current stroke-[2px]"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+          />
+        </svg>
+      )}
     </button>
   );
 }

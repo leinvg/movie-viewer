@@ -2,6 +2,8 @@
 
 @import "tailwindcss";
 
+@variant dark (&:is(.dark *));
+
 @theme inline {
   --breakpoint-xs: 500px;
   /* --color-background: var(--background);

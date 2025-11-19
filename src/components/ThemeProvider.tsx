@@ -2,20 +2,13 @@
 
 "use client";
 
-import { useEffect } from "react";
-import useAppStore from "@/store/appStore";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-/** Componente que sincroniza el tema del store con el DOM. */
-export function ThemeProvider() {
-  const { theme } = useAppStore();
-
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
-
-  return null;
+/** Componente que provee manejo de tema usando next-themes. */
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <NextThemesProvider attribute="class" defaultTheme="system" enableSystem>
+      {children}
+    </NextThemesProvider>
+  );
 }

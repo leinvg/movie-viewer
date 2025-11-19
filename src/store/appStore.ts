@@ -2,15 +2,9 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { TMDBMedia } from '@/types';
 
-export type Theme = 'light' | 'dark';
 export type Region = 'PE' | 'BO' | 'CL' | 'CO' | 'EC';
 
 interface AppState {
-  // Tema
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-  toggleTheme: () => void;
-
   // Región (para watch providers)
   region: Region;
   setRegion: (region: Region) => void;
@@ -26,14 +20,6 @@ interface AppState {
 const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
-      // Tema - light por defecto
-      theme: 'light',
-      setTheme: (theme) => set({ theme }),
-      toggleTheme: () =>
-        set((state) => ({
-          theme: state.theme === 'light' ? 'dark' : 'light',
-        })),
-
       // Región - PE por defecto
       region: 'PE',
       setRegion: (region) => set({ region }),

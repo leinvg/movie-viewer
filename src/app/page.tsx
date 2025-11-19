@@ -7,16 +7,16 @@ import Header from "@/components/Header";
 export default async function Home() {
   return (
     <>
-      <Header variant="minimal" />
+      <Header />
       <main className="flex-1 flex ">
-        <div className="container mx-auto pt-22 px-8 md:px-12 flex flex-col">
+        <div className="container mx-auto pt-24 px-8 md:px-12 flex flex-col">
           <section className="py-30 w-full flex-1 flex flex-col items-center justify-center gap-10 md:gap-12">
             <div className="flex flex-col items-center gap-2 md:gap-3 text-center">
               <h1 className="text-3xl md:text-4xl leading-tight tracking-tight font-medium">
                 Guía de <span className="hidden md:inline">Plataformas </span>
                 Streaming
               </h1>
-              <p className="md:text-lg dark:text-stone-100/70">
+              <p className="font-medium dark:font-normal md:text-lg text-stone-900/60 dark:text-stone-100/70">
                 Elige tus títulos favoritos y descubre dónde verlos.
               </p>
             </div>
