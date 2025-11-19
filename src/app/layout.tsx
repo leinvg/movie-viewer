@@ -29,8 +29,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-neutral-100 dark:bg-neutral-900 text-stone-900 dark:text-stone-100 overflow-x-hidden transition-colors flex flex-col min-h-dvh">
-        <ThemeProvider>{children}</ThemeProvider>
-        <Footer />
+        {children}
+        <ThemeProvider>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

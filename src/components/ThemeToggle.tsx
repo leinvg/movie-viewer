@@ -5,6 +5,11 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
+const THEME_LABEL = {
+  light: "claro",
+  dark: "oscuro",
+} as const;
+
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -25,11 +30,13 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2.5 rounded-full text-stone-900/60 dark:text-stone-100/70 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-neutral-300 dark:hover:bg-neutral-700 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all cursor-pointer"
+      className="p-2.5 rounded-full text-stone-900/60 dark:text-stone-100/70 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-neutral-300 dark:hover:bg-neutral-700 outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-400 transition-all cursor-pointer"
       aria-label={`Cambiar a tema ${
-        resolvedTheme === "light" ? "oscuro" : "claro"
+        resolvedTheme === "light" ? THEME_LABEL.dark : THEME_LABEL.light
       }`}
-      title={`Tema actual: ${resolvedTheme === "light" ? "Claro" : "Oscuro"}`}
+      title={`Cambiar a tema ${
+        resolvedTheme === "light" ? THEME_LABEL.dark : THEME_LABEL.light
+      }`}
     >
       {resolvedTheme === "light" ? (
         <svg

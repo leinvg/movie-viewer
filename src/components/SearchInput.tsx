@@ -40,7 +40,7 @@ export default function SearchInput({
           type="button"
           onClick={onClear}
           aria-label="Limpiar búsqueda"
-          className="absolute right-14 p-2.5 text-stone-900/60 hover:text-stone-900 bg-neutral-200 dark:bg-neutral-800 dark:text-stone-100/70 rounded-full outline-none transition-all cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-700 focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="absolute right-14 p-2.5 text-stone-900/60 hover:text-stone-900 bg-neutral-200 dark:bg-neutral-800 dark:text-stone-100/70 rounded-full outline-none transition-all cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-700 focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-400"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@ export default function SearchInput({
       <button
         type="submit"
         aria-label="Buscar"
-        className="absolute right-2 p-2.5 bg-neutral-700 dark:bg-neutral-300 text-stone-100 dark:text-stone-900 rounded-full transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-200 dark:focus-visible:ring-offset-neutral-800"
+        className="absolute right-2 p-2.5 bg-neutral-700 dark:bg-neutral-300 text-stone-100 dark:text-stone-900 rounded-full transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-200 dark:focus-visible:ring-offset-neutral-800"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

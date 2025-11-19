@@ -20,19 +20,19 @@ export default function Header({
   const { favorites } = useAppStore();
 
   return (
-    <header className="fixed top-6 md:top-10 left-1/2 -translate-x-1/2 z-50 flex inset-ring inset-ring-neutral-300 dark:inset-ring-neutral-700 p-2 rounded-full bg-neutral-100/70 dark:bg-neutral-900/70 backdrop-blur-sm">
+    <header className="fixed top-6 md:top-10 left-1/2 -translate-x-1/2 z-50 flex inset-ring inset-ring-neutral-300 dark:inset-ring-neutral-700 p-2 rounded-full bg-neutral-100/70 dark:bg-neutral-900/80 backdrop-blur-xs gap-2 w-full max-w-xl">
       {variant === "full" && (
         <>
           <button
             type="button"
             onClick={() => router.push("/")}
             aria-label="Ir a la página principal"
-            className="p-2.5 bg-neutral-200 text-stone-900 rounded-full transition-all cursor-pointer outline-none focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800"
+            className="p-4 rounded-full hover:bg-neutral-700 transition-all cursor-pointer outline-none focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              className="size-5 fill-none stroke-current stroke-[2px]"
+              className="size-6 fill-none stroke-current stroke-[1.5px]"
             >
               <path
                 strokeLinecap="round"
@@ -48,7 +48,7 @@ export default function Header({
 
           <button
             onClick={() => router.push("/favorites")}
-            className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 px-3 sm:px-4 py-2 rounded-lg transition-colors font-semibold text-sm"
+            className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 px-3 sm:px-4 py-2 rounded-full transition-colors font-semibold text-sm"
             aria-label="Ir a favoritos"
           >
             <span>⭐</span>
@@ -59,7 +59,6 @@ export default function Header({
           </button>
         </>
       )}
-      <ThemeToggle />
     </header>
   );
 }
