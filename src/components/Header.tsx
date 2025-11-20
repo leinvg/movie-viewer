@@ -4,61 +4,42 @@
 
 import { useRouter } from "next/navigation";
 import useAppStore from "@/store/appStore";
-import ThemeToggle from "./ThemeToggle";
 import SearchBox from "./SearchBox";
+import FavoritesLink from "@/components/FavoritesLink";
+import Link from "next/link";
 
 interface HeaderProps {
-  variant?: "minimal" | "full";
   initialQuery?: string;
 }
 
-export default function Header({
-  variant = "minimal",
-  initialQuery,
-}: HeaderProps) {
-  const router = useRouter();
-  const { favorites } = useAppStore();
-
+export default function Header({ initialQuery }: HeaderProps) {
   return (
-    <header className="fixed top-6 md:top-10 left-1/2 -translate-x-1/2 z-50 flex inset-ring inset-ring-neutral-300 dark:inset-ring-neutral-700 p-2 rounded-full bg-neutral-100/70 dark:bg-neutral-900/80 backdrop-blur-xs gap-2 w-full max-w-xl">
-      {variant === "full" && (
-        <>
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            aria-label="Ir a la página principal"
-            className="p-4 rounded-full hover:bg-neutral-700 transition-all cursor-pointer outline-none focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800"
+    <header className="fixed left-1/2 -translate-x-1/2 w-full z-50 max-w-125 top-4">
+      <div className="mx-4 flex rounded-full items-center dark:bg-neutral-900/80 p-2 backdrop-blur-md gap-2  border-neutral-300 dark:border-neutral-800 shadow-xl ring-1 ring-neutral-300 dark:ring-neutral-700">
+        <Link
+          href="/"
+          className="inline-flex p-4.5 dark:bg-neutral-800 rounded-full items-end text-sm text-stone-900/60 bg-neutral-200 dark:text-stone-100/70 hover:text-stone-900 dark:hover:text-stone-100 font-medium dark:font-normal transition-colors gap-1"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="size-5 stroke-2"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              className="size-6 fill-none stroke-current stroke-[1.5px]"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-              />
-            </svg>
-          </button>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+            />
+          </svg>
+        </Link>
 
-          <div className="flex-1">
-            <SearchBox initialQuery={initialQuery} />
-          </div>
-
-          <button
-            onClick={() => router.push("/favorites")}
-            className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 px-3 sm:px-4 py-2 rounded-full transition-colors font-semibold text-sm"
-            aria-label="Ir a favoritos"
-          >
-            <span>⭐</span>
-            <span className="hidden sm:inline">Favoritos</span>
-            <span className="hidden sm:inline bg-sky-800 px-2 py-0.5 rounded text-xs font-bold">
-              {favorites.length}
-            </span>
-          </button>
-        </>
-      )}
+        <div className="flex-1">
+          <SearchBox initialQuery={initialQuery} />
+        </div>
+        {/* <FavoritesLink /> */}
+      </div>
     </header>
   );
 }
