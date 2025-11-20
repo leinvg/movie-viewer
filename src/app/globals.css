@@ -9,9 +9,17 @@
   --breakpoint-xs: 500px;
 
   /* Colores: Fondos */
-  --color-surface: var(--color-neutral-200);
-  --color-hover: color-mix(in srgb, var(--color-neutral-300) 70%, transparent);
-  --color-surface-dark: var(--color-neutral-800);
+  --color-surface: color-mix(
+    in srgb,
+    var(--color-neutral-200) 80%,
+    transparent
+  );
+  --color-hover: color-mix(in srgb, var(--color-neutral-200) 90%, transparent);
+  --color-surface-dark: color-mix(
+    in srgb,
+    var(--color-neutral-800) 70%,
+    transparent
+  );
   --color-hover-dark: color-mix(
     in srgb,
     var(--color-neutral-700) 50%,
