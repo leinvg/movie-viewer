@@ -4,48 +4,59 @@
 
 @variant dark (&:is(.dark *));
 
+:root {
+  /* Backgrounds */
+  --bg-primary: theme(colors.neutral.100);
+  --bg-secondary: color-mix(
+    in srgb,
+    theme(colors.neutral.200) 90%,
+    transparent
+  );
+  --bg-hover: color-mix(in srgb, theme(colors.neutral.200) 90%, transparent);
+
+  /* Foregrounds */
+  --fg-primary: theme(colors.stone.900);
+  --fg-secondary: color-mix(in srgb, theme(colors.stone.900) 70%, transparent);
+  --fg-tertiary: color-mix(in srgb, theme(colors.stone.900) 50%, transparent);
+
+  /* States */
+  --bd-focus: theme(colors.blue.600);
+}
+
+:root.dark {
+  /* Backgrounds */
+  --bg-primary: theme(colors.neutral.900);
+  --bg-secondary: color-mix(
+    in srgb,
+    theme(colors.neutral.800) 70%,
+    transparent
+  );
+  --bg-hover: color-mix(in srgb, theme(colors.neutral.700) 50%, transparent);
+
+  /* Foregrounds */
+  --fg-primary: theme(colors.stone.100);
+  --fg-secondary: color-mix(in srgb, theme(colors.stone.100) 60%, transparent);
+  --fg-tertiary: color-mix(in srgb, theme(colors.stone.100) 40%, transparent);
+
+  /* States */
+  --bd-focus: theme(colors.blue.400);
+}
+
 @theme inline {
   /* Breakpoints */
   --breakpoint-xs: 500px;
 
-  /* Colores: Fondos */
-  --color-surface: color-mix(
-    in srgb,
-    var(--color-neutral-200) 80%,
-    transparent
-  );
-  --color-hover: color-mix(in srgb, var(--color-neutral-200) 90%, transparent);
-  --color-surface-dark: color-mix(
-    in srgb,
-    var(--color-neutral-800) 70%,
-    transparent
-  );
-  --color-hover-dark: color-mix(
-    in srgb,
-    var(--color-neutral-700) 50%,
-    transparent
-  );
+  /* Colors */
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-hover: var(--bg-hover);
 
-  /* Colores: Texto + iconos */
-  --color-base: var(--color-stone-900);
-  --color-soft: color-mix(in srgb, var(--color-stone-900) 70%, transparent);
-  --color-muted: color-mix(in srgb, var(--color-stone-900) 50%, transparent);
-  --color-base-dark: var(--color-stone-100);
-  --color-soft-dark: color-mix(
-    in srgb,
-    var(--color-stone-100) 60%,
-    transparent
-  );
-  --color-muted-dark: color-mix(
-    in srgb,
-    var(--color-stone-100) 40%,
-    transparent
-  );
+  --color-fg-primary: var(--fg-primary);
+  --color-fg-secondary: var(--fg-secondary);
+  --color-fg-tertiary: var(--fg-tertiary);
 
-  /* Colores: Estados */
-  --color-focus: var(--color-blue-600);
-  --color-focus-dark: var(--color-blue-400);
+  --color-bd-focus: var(--bd-focus);
 
-  /* Tipografía */
+  /* Typography */
   --font-sans: var(--font-jakarta);
 }

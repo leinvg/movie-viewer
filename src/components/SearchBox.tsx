@@ -73,12 +73,12 @@ export default function SearchBox({ initialQuery = "" }: SearchBoxProps) {
 
   return (
     <form onSubmit={handleSubmit} className="group relative w-full">
-      <div className="flex items-center bg-surface dark:bg-surface-dark hover:bg-hover dark:hover:bg-hover-dark focus-within:bg-hover dark:focus-within:bg-hover-dark rounded-full text-soft dark:text-soft-dark hover:text-base dark:hover:text-base-dark focus-within:text-base dark:focus-within:text-base-dark">
+      <div className="flex items-center bg-surface dark:bg-surface-dark backdrop-blur-md hover:bg-hover dark:hover:bg-hover-dark focus-within:bg-hover dark:focus-within:bg-hover-dark rounded-full text-soft dark:text-soft-dark hover:text-base dark:hover:text-base-dark focus-within:text-base dark:focus-within:text-base-dark ring ring-neutral-300">
         <button
           type="submit"
           aria-label="Buscar"
           title="Buscar"
-          className="mx-2 p-2.5 rounded-full transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-focus dark:focus-visible:ring-focus-dark"
+          className="mx-1.5 p-2 rounded-full transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-focus dark:focus-visible:ring-focus-dark"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ export default function SearchBox({ initialQuery = "" }: SearchBoxProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
-          className="w-full py-4 text-base dark:text-base-dark placeholder-soft dark:placeholder-soft-dark outline-none inset-ring-neutral-300 dark:inset-ring-neutral-700 transition-all"
+          className="w-full py-3 text-base dark:text-base-dark placeholder-soft dark:placeholder-soft-dark outline-none inset-ring-neutral-300 dark:inset-ring-neutral-700 transition-all"
           autoComplete="off"
           enterKeyHint="search"
         />
@@ -106,7 +106,7 @@ export default function SearchBox({ initialQuery = "" }: SearchBoxProps) {
           href="/favorites"
           aria-label="Ir a favoritos"
           title="Ir a favoritos"
-          className="relative flex gap-1 mx-2 p-2.5 rounded-full transition-all text-soft dark:text-soft-dark hover:text-base dark:hover:text-base-dark cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-focus dark:focus-visible:ring-focus-dark"
+          className="relative flex gap-1 mx-1.5 p-2 rounded-full transition-all text-soft dark:text-soft-dark hover:text-base dark:hover:text-base-dark cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-focus dark:focus-visible:ring-focus-dark"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

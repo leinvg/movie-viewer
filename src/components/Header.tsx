@@ -11,8 +11,8 @@ interface HeaderProps {
 
 export default function Header({ initialQuery }: HeaderProps) {
   return (
-    <header className="fixed left-1/2 -translate-x-1/2 w-full z-50 max-w-125 top-4">
-      <div className="mx-4 flex rounded-full items-center p-2 backdrop-blur-lg gap-2 shadow-lg ring ring-neutral-300/40 dark:ring-neutral-700/40">
+    <header className="fixed left-1/2 -translate-x-1/2 w-11/12 z-50 max-w-125 top-4">
+      <div className="flex rounded-full items-center gap-2 ring-neutral-300/40 dark:ring-neutral-700/40">
         <Link
           href="/"
           className="inline-flex p-4.5 dark:bg-neutral-800 rounded-full items-end text-sm text-stone-900/60 bg-neutral-200 dark:text-stone-100/70 hover:text-stone-900 dark:hover:text-stone-100 font-medium dark:font-normal transition-colors gap-1"
