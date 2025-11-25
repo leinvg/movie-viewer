@@ -5,41 +5,39 @@
 @variant dark (&:is(.dark *));
 
 :root {
-  /* Backgrounds */
-  --bg-primary: theme(colors.neutral.100);
-  --bg-secondary: color-mix(
+  --background: theme(colors.neutral.100);
+  --surface: color-mix(in srgb, theme(colors.neutral.200) 80%, transparent);
+  --surface-hover: color-mix(
     in srgb,
     theme(colors.neutral.200) 90%,
     transparent
   );
-  --bg-hover: color-mix(in srgb, theme(colors.neutral.200) 90%, transparent);
-
-  /* Foregrounds */
-  --fg-primary: theme(colors.stone.900);
-  --fg-secondary: color-mix(in srgb, theme(colors.stone.900) 70%, transparent);
-  --fg-tertiary: color-mix(in srgb, theme(colors.stone.900) 50%, transparent);
-
-  /* States */
-  --bd-focus: theme(colors.blue.600);
+  --foreground: theme(colors.stone.900);
+  --foreground-secondary: color-mix(
+    in srgb,
+    theme(colors.stone.900) 60%,
+    transparent
+  );
+  --border: theme(colors.neutral.300);
+  --border-focus: theme(colors.neutral.700);
 }
 
 :root.dark {
-  /* Backgrounds */
-  --bg-primary: theme(colors.neutral.900);
-  --bg-secondary: color-mix(
+  --background: theme(colors.neutral.900);
+  --surface: color-mix(in srgb, theme(colors.neutral.700) 70%, transparent);
+  --surface-hover: color-mix(
     in srgb,
-    theme(colors.neutral.800) 70%,
+    theme(colors.neutral.700) 80%,
     transparent
   );
-  --bg-hover: color-mix(in srgb, theme(colors.neutral.700) 50%, transparent);
-
-  /* Foregrounds */
-  --fg-primary: theme(colors.stone.100);
-  --fg-secondary: color-mix(in srgb, theme(colors.stone.100) 60%, transparent);
-  --fg-tertiary: color-mix(in srgb, theme(colors.stone.100) 40%, transparent);
-
-  /* States */
-  --bd-focus: theme(colors.blue.400);
+  --foreground: theme(colors.stone.100);
+  --foreground-secondary: color-mix(
+    in srgb,
+    theme(colors.stone.100) 60%,
+    transparent
+  );
+  --border: theme(colors.neutral.600);
+  --border-focus: theme(colors.neutral.200);
 }
 
 @theme inline {
@@ -47,15 +45,13 @@
   --breakpoint-xs: 500px;
 
   /* Colors */
-  --color-bg-primary: var(--bg-primary);
-  --color-bg-secondary: var(--bg-secondary);
-  --color-bg-hover: var(--bg-hover);
-
-  --color-fg-primary: var(--fg-primary);
-  --color-fg-secondary: var(--fg-secondary);
-  --color-fg-tertiary: var(--fg-tertiary);
-
-  --color-bd-focus: var(--bd-focus);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-border: var(--border);
+  --color-border-focus: var(--border-focus);
 
   /* Typography */
   --font-sans: var(--font-jakarta);

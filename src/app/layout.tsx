@@ -28,7 +28,7 @@ export default function RootLayout({
       className={`${plusJakartaSans.variable} scroll-smooth antialiased`}
       suppressHydrationWarning
     >
-      <body className="flex flex-col min-h-dvh overflow-x-hidden bg-bg-primary text-fg-primary transition-colors">
+      <body className="flex flex-col min-h-dvh overflow-x-hidden bg-background text-foreground transition-colors">
         <ThemeProvider>
           <main className="flex flex-1">{children}</main>
           <Footer />

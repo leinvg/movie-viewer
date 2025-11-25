@@ -1,82 +1,12 @@
 // src/app/page.tsx
 
-import SearchBox from "@/components/SearchBox";
-import Image from "next/image";
+import Header from "@/components/Header";
 
 export default async function Home() {
   return (
-    <div className="container mx-auto">
-      <div className="relative w-full h-full flex flex-col justify-end">
-        {/* Hero Image */}
-        <div className="absolute top-0 w-full h-9/12 md:h-8/12">
-          {/* Mobile - Light */}
-          <Image
-            src="/hero-mobile.jpg"
-            alt="Hero background light"
-            fill
-            priority
-            quality={90}
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-            className="object-cover sm:hidden dark:hidden"
-          />
-          {/* Mobile - Dark */}
-          <Image
-            src="/hero-mobile-dark.jpg"
-            alt="Hero background dark"
-            fill
-            priority
-            quality={90}
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-            className="object-cover hidden dark:block sm:dark:hidden"
-          />
-
-          {/* Tablet - Light */}
-          <Image
-            src="/hero-tablet.jpg"
-            alt="Hero background"
-            fill
-            priority
-            quality={90}
-            sizes="(max-width: 1024px) 100vw, 100vw"
-            className="object-cover object-bottom hidden sm:block lg:hidden dark:hidden"
-          />
-          {/* Tablet - Dark */}
-          <Image
-            src="/hero-tablet-dark.jpg"
-            alt="Hero background"
-            fill
-            priority
-            quality={90}
-            sizes="(max-width: 1024px) 100vw, 100vw"
-            className="object-cover hidden sm:dark:block lg:dark:hidden"
-          />
-
-          {/* Desktop - Light */}
-          <Image
-            src="/hero-desktop.jpg"
-            alt="Hero background"
-            fill
-            priority
-            quality={90}
-            sizes="100vw"
-            className="object-cover hidden lg:block dark:hidden"
-          />
-          {/* Desktop - Dark */}
-          <Image
-            src="/hero-desktop-inverse.jpg"
-            alt="Hero background"
-            fill
-            priority
-            quality={90}
-            sizes="100vw"
-            className="object-cover hidden lg:dark:block"
-          />
-
-          {/* Gradiente overlay */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,transparent_0%,transparent_45%,var(--bg-primary)_90%)] md:bg-[radial-gradient(circle_at_50%_-10%,transparent_0%,transparent_40%,var(--bg-primary)_80%)]" />
-        </div>
-
-        <section className="z-10 bg-gradient-to-b from-transparent to-bg-primary to-40% md:to-35% flex flex-col items-center gap-8 md:gap-10 pt-20">
+    <div className="w-full mx-auto">
+      <div className="relative w-full h-full flex flex-col justify-center">
+        <section className="z-10 flex flex-col items-center gap-8 md:gap-10 pt-30">
           <div className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -98,12 +28,12 @@ export default async function Home() {
               Guía de <span className="hidden md:inline">Plataformas </span>
               Streaming
             </h1>
-            <p className="font-medium dark:font-normal md:text-lg text-fg-secondary">
+            <p className="font-medium md:text-lg text-foreground-secondary">
               Elige tus títulos favoritos y descubre dónde verlos.
             </p>
           </div>
           <div className="w-full max-w-lg md:max-w-2xl flex flex-col items-center gap-6">
-            <SearchBox />
+            <Header />
           </div>
         </section>
       </div>
