@@ -4,7 +4,7 @@
 
 import SearchBar from "./SearchBar";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const LINK_BASE =
   "p-2 rounded-full transition-all outline-none focus-visible:ring-2 focus-visible:ring-border-focus hover:text-foreground";
@@ -15,23 +15,23 @@ const PAGE_TITLES: Record<string, string> = {
   "/search": "Resultados",
 };
 
-interface HeaderProps {
-  initialQuery?: string;
-}
-
-export default function Header({ initialQuery }: HeaderProps) {
+export default function Header() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentQuery = searchParams.get("q") || "";
   const title = PAGE_TITLES[pathname] || "Buscar";
 
   const isHomePage = pathname === "/";
   const isFavoritesPage = pathname === "/favorites";
 
   return (
-    <header className="fixed left-1/2 -translate-x-1/2 w-full max-w-xl z-50 px-6 pt-4 flex flex-col gap-2 items-center">
-      <div className="flex gap-1.5 backdrop-blur-lg bg-surface rounded-full p-1.5 text-foreground-secondary hover:inset-ring hover:inset-ring-border transition-all">
+    <header className="fixed left-1/2 -translate-x-1/2 w-full max-w-xl z-50 sm:px-0 px-6 pt-4 flex flex-col gap-2 items-center">
+      <div className="flex justify-between items-center w-48 backdrop-blur-lg bg-glass rounded-full p-1.5 text-foreground-secondary border border-line hover:bg-glass-hover hover:border-line-hover transition-all">
         <Link
           href="/"
-          className={`${LINK_BASE} ${isHomePage ? "bg-background text-foreground" : ""}`}
+          className={`${LINK_BASE} ${
+            isHomePage ? "bg-glass-surface text-foreground" : ""
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -45,24 +45,13 @@ export default function Header({ initialQuery }: HeaderProps) {
             />
           </svg>
         </Link>
-        <h1 className="flex items-center px-2 text-sm font-medium text-foreground-secondary">
-          {title}
-        </h1>
+        <h2 className="px-2 text-sm font-medium dark:font-normal">{title}</h2>
         <Link
           href="/favorites"
-          className={`${LINK_BASE} ${isFavoritesPage ? "bg-background text-foreground" : ""}`}
+          className={`${LINK_BASE} ${
+            isFavoritesPage ? "bg-glass-surface text-foreground" : ""
+          }`}
         >
-          {/* <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            className="size-5 fill-none stroke-current stroke-[1.5px]"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-            />
-          </svg> */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -76,7 +65,7 @@ export default function Header({ initialQuery }: HeaderProps) {
           </svg>
         </Link>
       </div>
-      <SearchBar initialQuery={initialQuery} />
+      <SearchBar initialQuery={currentQuery} />
     </header>
   );
 }

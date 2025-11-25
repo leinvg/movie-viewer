@@ -30,7 +30,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2.5 rounded-full text-stone-900/60 dark:text-stone-100/70 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-neutral-300 dark:hover:bg-neutral-700 outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-400 transition-all cursor-pointer"
+      className="p-2 rounded-full text-foreground-secondary hover:text-foreground cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-border-focus transition-all"
       aria-label={`Cambiar a tema ${
         resolvedTheme === "light" ? THEME_LABEL.dark : THEME_LABEL.light
       }`}

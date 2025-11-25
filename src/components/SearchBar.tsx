@@ -73,7 +73,7 @@ export default function SearchBar({ initialQuery = "" }: SearchBarProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative flex items-center w-full overflow-hidden rounded-full bg-surface text-foreground-secondary backdrop-blur-lg transition-all hover:bg-surface-hover hover:text-foreground hover:inset-ring hover:inset-ring-border focus-within:bg-surface-hover focus-within:text-foreground has-[input:focus]:inset-ring-2 has-[input:focus]:inset-ring-border-focus"
+      className="relative flex items-center w-full overflow-hidden rounded-full bg-glass text-foreground-secondary backdrop-blur-lg transition-all hover:bg-glass-hover hover:text-foreground focus-within:bg-glass-hover focus-within:text-foreground has-[input:focus]:border-line-hover border border-line hover:border-line-hover"
     >
       <button
         type="submit"

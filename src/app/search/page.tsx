@@ -1,6 +1,5 @@
 // src/app/search/page.tsx
 
-import Header from "@/components/Header";
 import SearchResults from "@/components/SearchResults";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { fetchFilteredSearch } from "@/services/tmdb";
@@ -29,8 +28,7 @@ export default async function SearchPage({ searchParams }: Props) {
 
   return (
     <main className="flex-1">
-      <Header initialQuery={q} />
-      <div className="pt-40 p-4 max-w-7xl mx-auto">
+      <div className="pt-40 max-w-7xl mx-auto">
         {q ? (
           <ErrorBoundary>
             <SearchResults
