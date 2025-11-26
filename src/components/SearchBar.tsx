@@ -3,7 +3,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const BASE_PLACEHOLDER = "Buscar";
 const SUFFIXES = [" películas", " series", " personas"];
@@ -17,11 +17,9 @@ const ANIMATION_CONFIG = {
 const BUTTON_BASE =
   "absolute mx-1.5 p-2 rounded-full transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-border-focus";
 
-interface SearchBarProps {
-  initialQuery?: string;
-}
-
-export default function SearchBar({ initialQuery = "" }: SearchBarProps) {
+export default function SearchBar() {
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get("q") || "";
   const [query, setQuery] = useState(initialQuery);
   const [placeholder, setPlaceholder] = useState(BASE_PLACEHOLDER);
   const router = useRouter();

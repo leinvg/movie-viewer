@@ -29,7 +29,7 @@
 }
 
 @theme inline {
-  --breakpoint-xs: 400px;
+  --breakpoint-xs: 375px;
 
   --font-sans: var(--font-jakarta);
 

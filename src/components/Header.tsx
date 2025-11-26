@@ -3,20 +3,36 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import { useFavorites } from "@/hooks/useFavorites";
+import useAppStore from "@/store/appStore";
 import SearchBar from "./SearchBar";
 
 const NAV_LINK =
   "flex items-center gap-2 py-2.5 px-3.5 bg-surface rounded-lg outline-none transition-all hover:bg-surface-hover focus-visible:ring-2 focus-visible:bg-surface-hover";
 
-function HeaderContent() {
-  const searchParams = useSearchParams();
-  const currentQuery = searchParams.get("q") || "";
-  const { favorites } = useFavorites();
+function FavoritesButton() {
+  const { favorites } = useAppStore();
   const favCount = favorites.length;
 
+  return (
+    <Link href="/favorites" className={NAV_LINK} aria-label="Favoritos">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        className="size-5 stroke-current stroke-[1.5px] fill-none"
+        aria-hidden="true"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+        />
+      </svg>
+      {favCount && <span className="text-xs font-medium">{favCount}</span>}
+    </Link>
+  );
+}
+
+export default function Header() {
   return (
     <header className="fixed top-0 z-50 flex flex-wrap xs:flex-nowrap w-full gap-2 p-2 bg-canvas border-b border-line transition-all sm:left-1/2 sm:-translate-x-1/2 sm:max-w-lg sm:border-x sm:rounded-b-2xl">
       <div className="flex-1 flex order-1 sm:flex-initial">
@@ -37,36 +53,12 @@ function HeaderContent() {
       </div>
 
       <div className="w-full order-3 xs:order-2">
-        <SearchBar initialQuery={currentQuery} />
+        <SearchBar />
       </div>
 
       <div className="flex-1 flex order-2 justify-end xs:flex-initial xs:order-3">
-        <Link href="/favorites" className={NAV_LINK} aria-label="Favoritos">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            className="size-5 stroke-current stroke-[1.5px] fill-none"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-            />
-          </svg>
-          {favCount > 0 && (
-            <span className="text-xs font-medium">{favCount}</span>
-          )}
-        </Link>
+        <FavoritesButton />
       </div>
     </header>
-  );
-}
-
-export default function Header() {
-  return (
-    <Suspense fallback={null}>
-      <HeaderContent />
-    </Suspense>
   );
 }
