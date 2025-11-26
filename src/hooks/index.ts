@@ -1,4 +1,4 @@
 // Barrel export para hooks
 
 export { useFetchMedia } from "./useFetchMedia";
-export { useLocalStorageSync } from "./useLocalStorageSync";
+// `useLocalStorageSync` removed — deleted and staged for removal via git

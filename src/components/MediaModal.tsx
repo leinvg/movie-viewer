@@ -2,12 +2,13 @@
 
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TMDBMedia, TMDBMovie, TMDBTv } from "@/types";
 import Image from "next/image";
 import { getImagePath } from "@/services/tmdb";
 import { TmdbImageSize } from "@/types";
 import { useFetchMedia } from "@/hooks";
+import { CreditsResponse } from "@/types/creditsTypes";
 import { APP_CONFIG } from "@/config";
 
 interface MediaModalProps {
@@ -17,10 +18,47 @@ interface MediaModalProps {
 
 export default function MediaModal({ media, onClose }: MediaModalProps) {
   const mediaType = (media?.media_type as "movie" | "tv" | null) || null;
-  const { media: detailedMedia, credits } = useFetchMedia(
-    mediaType,
-    media?.id ?? null
-  );
+  const { media: detailedMedia } = useFetchMedia(mediaType, media?.id ?? null);
+
+  const [credits, setCredits] = useState<CreditsResponse | null>(null);
+  const [creditsLoading, setCreditsLoading] = useState(false);
+  const [creditsError, setCreditsError] = useState<Error | null>(null);
+
+  // Fetch credits on-demand when modal is opened
+  useEffect(() => {
+    if (!mediaType || !media?.id) {
+      setCredits(null);
+      setCreditsError(null);
+      setCreditsLoading(false);
+      return;
+    }
+
+    let mounted = true;
+
+    const fetchCredits = async () => {
+      try {
+        setCreditsLoading(true);
+        setCreditsError(null);
+
+        const res = await fetch(`/api/media/${mediaType}/${media.id}/credits`);
+        if (!res.ok) throw new Error(`Failed to fetch ${mediaType} credits`);
+
+        const data = await res.json();
+        if (mounted) setCredits(data);
+      } catch (err: unknown) {
+        if (mounted)
+          setCreditsError(err instanceof Error ? err : new Error(String(err)));
+      } finally {
+        if (mounted) setCreditsLoading(false);
+      }
+    };
+
+    fetchCredits();
+
+    return () => {
+      mounted = false;
+    };
+  }, [mediaType, media?.id]);
 
   useEffect(() => {
     // Solo bloquear scroll si el modal está abierto
@@ -188,6 +226,20 @@ export default function MediaModal({ media, onClose }: MediaModalProps) {
             )}
 
             {/* Cast */}
+            {creditsLoading && !credits && (
+              <div className="mt-6 pt-6 border-t border-gray-700">
+                <h2 className="text-xl font-semibold mb-4">Elenco</h2>
+                <p className="text-gray-400">Cargando elenco...</p>
+              </div>
+            )}
+
+            {creditsError && (
+              <div className="mt-6 pt-6 border-t border-gray-700">
+                <h2 className="text-xl font-semibold mb-4">Elenco</h2>
+                <p className="text-red-400">No fue posible cargar el elenco.</p>
+              </div>
+            )}
+
             {credits?.cast && credits.cast.length > 0 && (
               <div className="mt-6 pt-6 border-t border-gray-700">
                 <h2 className="text-xl font-semibold mb-4">Elenco</h2>
