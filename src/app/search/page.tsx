@@ -26,21 +26,19 @@ export default async function SearchPage({ searchParams }: Props) {
   }
 
   return (
-    <main className="flex-1">
-      <div className="pt-40 max-w-7xl mx-auto">
-        {q ? (
-          <SearchResults
-            initialResults={initial.results}
-            initialHasMore={initial.hasMore}
-            initialNextPage={initial.nextPage}
-            query={q}
-          />
-        ) : (
-          <div className="text-center py-24 text-gray-400">
-            Escribe algo en el buscador para empezar.
-          </div>
-        )}
-      </div>
-    </main>
+    <div className="w-full">
+      {q ? (
+        <SearchResults
+          initialResults={initial.results}
+          initialHasMore={initial.hasMore}
+          initialNextPage={initial.nextPage}
+          query={q}
+        />
+      ) : (
+        <div className="text-center py-24 text-gray-400">
+          Escribe algo en el buscador para empezar.
+        </div>
+      )}
+    </div>
   );
 }

@@ -7,7 +7,7 @@ import useAppStore from "@/store/appStore";
 import SearchBar from "./SearchBar";
 
 const NAV_LINK =
-  "flex items-center w-full justify-center gap-2 py-2.5 px-3.5 bg-surface rounded-lg outline-none transition-all hover:bg-surface-hover focus-visible:ring-2 focus-visible:bg-surface-hover";
+  "flex items-center w-full justify-center gap-2 py-2.5 px-3.5 bg-surface rounded-lg outline-none transition-all hover:text-foreground hover:bg-surface-hover focus-visible:ring-2 focus-visible:bg-surface-hover";
 
 function FavoritesButton() {
   const { favorites } = useAppStore();
@@ -34,7 +34,7 @@ function FavoritesButton() {
 
 export default function Header() {
   return (
-    <header className="fixed top-0 z-50 flex flex-wrap xs:flex-nowrap w-full gap-2 p-2 bg-canvas border-b border-line transition-all sm:left-1/2 sm:-translate-x-1/2 sm:max-w-lg sm:border-x sm:rounded-b-2xl">
+    <header className="fixed top-0 z-50 flex flex-wrap xs:flex-nowrap w-full gap-2 p-2 bg-canvas border-b border-line transition-all sm:left-1/2 sm:-translate-x-1/2 sm:max-w-lg sm:border-x sm:rounded-b-2xl md:text-foreground-secondary">
       <div className="flex-1 flex order-1 sm:flex-initial">
         <Link href="/" className={NAV_LINK} aria-label="Inicio">
           <svg

@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className="flex flex-col min-h-dvh overflow-x-hidden bg-canvas text-foreground transition-colors">
         <ThemeProvider>
           <Header />
-          <main className="flex flex-1 w-full max-w-7xl mx-auto px-4 md:px-6">
+          <main className="flex flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 pt-32 xs:pt-24">
             {children}
           </main>
           <Footer />
