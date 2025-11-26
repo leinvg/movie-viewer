@@ -3,11 +3,18 @@
 "use client";
 
 import Link from "next/link";
+import { Suspense } from "react";
 import useAppStore from "@/store/appStore";
 import SearchBar from "./SearchBar";
 
 const NAV_LINK =
   "flex items-center w-full justify-center gap-2 py-2.5 px-3.5 bg-surface rounded-lg outline-none transition-all hover:text-foreground hover:bg-surface-hover focus-visible:ring-2 focus-visible:bg-surface-hover";
+
+function SearchBarFallback() {
+  return (
+    <div className="flex items-center w-full h-10 bg-surface rounded-lg animate-pulse" />
+  );
+}
 
 function FavoritesButton() {
   const { favorites } = useAppStore();
@@ -53,7 +60,9 @@ export default function Header() {
       </div>
 
       <div className="w-full order-3 xs:order-2">
-        <SearchBar />
+        <Suspense fallback={<SearchBarFallback />}>
+          <SearchBar />
+        </Suspense>
       </div>
 
       <div className="flex-1 flex order-2 justify-end xs:flex-initial xs:order-3">
