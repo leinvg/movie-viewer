@@ -5,60 +5,41 @@
 @variant dark (&:is(.dark *));
 
 :root {
-  --canvas: theme(colors.neutral.100);
-  --glass: color-mix(in srgb, theme(colors.neutral.200) 80%, transparent);
-  --glass-hover: color-mix(in srgb, theme(colors.neutral.200) 90%, transparent);
-  --glass-surface: color-mix(
-    in srgb,
-    theme(colors.neutral.50) 90%,
-    transparent
-  );
-  --foreground: theme(colors.stone.900);
-  --foreground-secondary: color-mix(
-    in srgb,
-    theme(colors.stone.900) 60%,
-    transparent
-  );
-  --line: theme(colors.neutral.300);
-  --line-hover: theme(colors.neutral.400);
-  --line-focus: theme(colors.neutral.700);
+  --foreground: hsl(20, 9%, 10%);
+  --foreground-secondary: hsl(0, 0%, 32%);
+
+  --canvas: hsl(0, 0%, 96%);
+  --surface: hsl(0, 0%, 86%);
+  --surface-hover: hsl(0, 0%, 86%);
+
+  --line: hsl(0, 0%, 83%);
+  --line-focus: hsl(0, 0%, 25%);
 }
 
 :root.dark {
-  --canvas: theme(colors.neutral.900);
-  --glass: color-mix(in srgb, theme(colors.neutral.800) 80%, transparent);
-  --glass-hover: color-mix(in srgb, theme(colors.neutral.800) 90%, transparent);
-  --glass-surface: color-mix(
-    in srgb,
-    theme(colors.neutral.600) 90%,
-    transparent
-  );
-  --foreground: theme(colors.stone.100);
-  --foreground-secondary: color-mix(
-    in srgb,
-    theme(colors.stone.100) 60%,
-    transparent
-  );
-  --line: theme(colors.neutral.700);
-  --line-hover: theme(colors.neutral.600);
-  --line-focus: theme(colors.neutral.200);
+  --foreground: hsl(220, 13%, 89%);
+  --foreground-secondary: hsl(0, 0%, 60%);
+
+  --canvas: hsl(220, 12%, 10%);
+  --surface: hsl(220, 12%, 18%);
+  --surface-hover: hsl(220, 12%, 22%);
+
+  --line: hsl(220, 12%, 20%);
+  --line-focus: hsl(220, 12%, 80%);
 }
 
 @theme inline {
-  /* Puntos de interrupción */
-  --breakpoint-xs: 500px;
+  --breakpoint-xs: 400px;
 
-  /* Colores */
-  --color-canvas: var(--canvas);
-  --color-glass: var(--glass);
-  --color-glass-hover: var(--glass-hover);
-  --color-glass-surface: var(--glass-surface);
+  --font-sans: var(--font-jakarta);
+
   --color-foreground: var(--foreground);
   --color-foreground-secondary: var(--foreground-secondary);
-  --color-line: var(--line);
-  --color-line-hover: var(--line-hover);
-  --color-line-focus: var(--line-focus);
 
-  /* Tipografía */
-  --font-sans: var(--font-jakarta);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+
+  --color-line: var(--line);
+  --color-line-focus: var(--line-focus);
 }

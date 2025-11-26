@@ -2,41 +2,30 @@
 
 "use client";
 
-import SearchBar from "./SearchBar";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { useFavorites } from "@/hooks/useFavorites";
+import SearchBar from "./SearchBar";
 
-const LINK_BASE =
-  "p-2 rounded-full transition-all outline-none focus-visible:ring-2 focus-visible:ring-border-focus hover:text-foreground";
+const NAV_LINK =
+  "flex items-center gap-2 py-2.5 px-3.5 bg-surface rounded-lg outline-none transition-all hover:bg-surface-hover focus-visible:ring-2 focus-visible:bg-surface-hover";
 
-const PAGE_TITLES: Record<string, string> = {
-  "/": "Inicio",
-  "/favorites": "Favoritos",
-  "/search": "Resultados",
-};
-
-export default function Header() {
-  const pathname = usePathname();
+function HeaderContent() {
   const searchParams = useSearchParams();
   const currentQuery = searchParams.get("q") || "";
-  const title = PAGE_TITLES[pathname] || "Buscar";
-
-  const isHomePage = pathname === "/";
-  const isFavoritesPage = pathname === "/favorites";
+  const { favorites } = useFavorites();
+  const favCount = favorites.length;
 
   return (
-    <header className="fixed left-1/2 -translate-x-1/2 w-full max-w-xl z-50 sm:px-0 px-6 pt-4 flex flex-col gap-2 items-center">
-      <div className="flex justify-between items-center w-48 backdrop-blur-lg bg-glass rounded-full p-1.5 text-foreground-secondary border border-line hover:bg-glass-hover hover:border-line-hover transition-all">
-        <Link
-          href="/"
-          className={`${LINK_BASE} ${
-            isHomePage ? "bg-glass-surface text-foreground" : ""
-          }`}
-        >
+    <header className="fixed top-0 z-50 flex flex-wrap xs:flex-nowrap w-full gap-2 p-2 bg-canvas border-b border-line transition-all sm:left-1/2 sm:-translate-x-1/2 sm:max-w-lg sm:border-x sm:rounded-b-2xl">
+      <div className="flex-1 flex order-1 sm:flex-initial">
+        <Link href="/" className={NAV_LINK} aria-label="Inicio">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            className="size-5 fill-none stroke-current stroke-[1.5px]"
+            className="size-5 stroke-current stroke-[1.5px] fill-none"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -45,17 +34,19 @@ export default function Header() {
             />
           </svg>
         </Link>
-        <h2 className="px-2 text-sm font-medium dark:font-normal">{title}</h2>
-        <Link
-          href="/favorites"
-          className={`${LINK_BASE} ${
-            isFavoritesPage ? "bg-glass-surface text-foreground" : ""
-          }`}
-        >
+      </div>
+
+      <div className="w-full order-3 xs:order-2">
+        <SearchBar initialQuery={currentQuery} />
+      </div>
+
+      <div className="flex-1 flex order-2 justify-end xs:flex-initial xs:order-3">
+        <Link href="/favorites" className={NAV_LINK} aria-label="Favoritos">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            className="size-5 fill-none stroke-current stroke-[1.5px]"
+            className="size-5 stroke-current stroke-[1.5px] fill-none"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -63,9 +54,19 @@ export default function Header() {
               d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
             />
           </svg>
+          {favCount > 0 && (
+            <span className="text-xs font-medium">{favCount}</span>
+          )}
         </Link>
       </div>
-      <SearchBar initialQuery={currentQuery} />
     </header>
+  );
+}
+
+export default function Header() {
+  return (
+    <Suspense fallback={null}>
+      <HeaderContent />
+    </Suspense>
   );
 }

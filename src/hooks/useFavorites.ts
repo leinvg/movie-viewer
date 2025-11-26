@@ -14,6 +14,7 @@ export const useFavorites = () => {
 
   // Leer favoritos del localStorage
   const getFavoritesFromStorage = (): TMDBMedia[] => {
+    if (typeof window === "undefined") return [];
     try {
       const raw = localStorage.getItem("mv_favorites");
       const arr = raw ? JSON.parse(raw) : [];
@@ -25,6 +26,8 @@ export const useFavorites = () => {
 
   // Inicializar y escuchar cambios
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    
     setFavorites(getFavoritesFromStorage());
 
     const onStorage = () => {
@@ -55,8 +58,11 @@ export const useFavorites = () => {
 
   // Guardar favoritos en localStorage y emitir evento
   const saveFavoritesAndNotify = (items: TMDBMedia[]) => {
-    localStorage.setItem("mv_favorites", JSON.stringify(items));
-    window.dispatchEvent(new Event("mv_favorites_changed"));
+    setFavorites(items);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("mv_favorites", JSON.stringify(items));
+      window.dispatchEvent(new Event("mv_favorites_changed"));
+    }
   };
 
   // Añadir a favoritos

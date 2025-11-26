@@ -73,7 +73,7 @@ export default function SearchBar({ initialQuery = "" }: SearchBarProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative flex items-center w-full overflow-hidden rounded-full bg-glass text-foreground-secondary backdrop-blur-lg transition-all hover:bg-glass-hover hover:text-foreground focus-within:bg-glass-hover focus-within:text-foreground has-[input:focus]:border-line-hover border border-line hover:border-line-hover"
+      className="relative flex items-center w-full overflow-hidden rounded-lg text-foreground-secondary bg-surface transition-all hover:bg-surface-hover hover:text-foreground focus-within:bg-surface-hover focus-within:text-foreground"
     >
       <button
         type="submit"
@@ -98,7 +98,9 @@ export default function SearchBar({ initialQuery = "" }: SearchBarProps) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-12 py-3 rounded-full bg-transparent placeholder-foreground-secondary outline-none transition-all"
+        className={`w-full pl-12 py-2 bg-transparent placeholder-foreground-secondary outline-none transition-all ${
+          query ? "pr-12" : "pr-4"
+        }`}
         autoComplete="off"
         enterKeyHint="search"
       />
