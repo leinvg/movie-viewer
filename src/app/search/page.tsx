@@ -1,7 +1,6 @@
 // src/app/search/page.tsx
 
 import SearchResults from "@/components/SearchResults";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { fetchFilteredSearch } from "@/services/tmdb";
 import { SearchMediaResult } from "@/types";
 import { APP_CONFIG } from "@/config";
@@ -30,14 +29,12 @@ export default async function SearchPage({ searchParams }: Props) {
     <main className="flex-1">
       <div className="pt-40 max-w-7xl mx-auto">
         {q ? (
-          <ErrorBoundary>
-            <SearchResults
-              initialResults={initial.results}
-              initialHasMore={initial.hasMore}
-              initialNextPage={initial.nextPage}
-              query={q}
-            />
-          </ErrorBoundary>
+          <SearchResults
+            initialResults={initial.results}
+            initialHasMore={initial.hasMore}
+            initialNextPage={initial.nextPage}
+            query={q}
+          />
         ) : (
           <div className="text-center py-24 text-gray-400">
             Escribe algo en el buscador para empezar.

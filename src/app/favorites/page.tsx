@@ -2,7 +2,6 @@
 
 import FavoritesList from "@/components/FavoritesList";
 import RegionSelector from "@/components/RegionSelector";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export default function FavoritesPage() {
   return (
@@ -14,9 +13,7 @@ export default function FavoritesPage() {
           </h1>
           <RegionSelector />
         </div>
-        <ErrorBoundary>
-          <FavoritesList />
-        </ErrorBoundary>
+        <FavoritesList />
       </div>
     </main>
   );
