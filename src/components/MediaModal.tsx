@@ -2,12 +2,12 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { TMDBMedia, TMDBMovie, TMDBTv } from "@/types";
 import Image from "next/image";
 import { getImagePath } from "@/services/tmdb";
 import { TmdbImageSize } from "@/types";
-import { useFetchMedia } from "@/hooks";
+import { useFetchTMDB } from "@/hooks";
 import { CreditsResponse } from "@/types/creditsTypes";
 import { APP_CONFIG } from "@/config";
 
@@ -18,47 +18,15 @@ interface MediaModalProps {
 
 export default function MediaModal({ media, onClose }: MediaModalProps) {
   const mediaType = (media?.media_type as "movie" | "tv" | null) || null;
-  const { media: detailedMedia } = useFetchMedia(mediaType, media?.id ?? null);
-
-  const [credits, setCredits] = useState<CreditsResponse | null>(null);
-  const [creditsLoading, setCreditsLoading] = useState(false);
-  const [creditsError, setCreditsError] = useState<Error | null>(null);
-
-  // Fetch credits on-demand when modal is opened
-  useEffect(() => {
-    if (!mediaType || !media?.id) {
-      setCredits(null);
-      setCreditsError(null);
-      setCreditsLoading(false);
-      return;
-    }
-
-    let mounted = true;
-
-    const fetchCredits = async () => {
-      try {
-        setCreditsLoading(true);
-        setCreditsError(null);
-
-        const res = await fetch(`/api/media/${mediaType}/${media.id}/credits`);
-        if (!res.ok) throw new Error(`Failed to fetch ${mediaType} credits`);
-
-        const data = await res.json();
-        if (mounted) setCredits(data);
-      } catch (err: unknown) {
-        if (mounted)
-          setCreditsError(err instanceof Error ? err : new Error(String(err)));
-      } finally {
-        if (mounted) setCreditsLoading(false);
-      }
-    };
-
-    fetchCredits();
-
-    return () => {
-      mounted = false;
-    };
-  }, [mediaType, media?.id]);
+  
+  // Fetch details and credits using generic hook
+  const { data: detailedMedia } = useFetchTMDB<TMDBMedia>(
+    mediaType && media?.id ? `/api/media/${mediaType}/${media.id}` : null
+  );
+  
+  const { data: credits, loading: creditsLoading, error: creditsError } = useFetchTMDB<CreditsResponse>(
+    mediaType && media?.id ? `/api/media/${mediaType}/${media.id}/credits` : null
+  );
 
   useEffect(() => {
     // Solo bloquear scroll si el modal está abierto
