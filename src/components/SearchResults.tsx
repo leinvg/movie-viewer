@@ -4,8 +4,8 @@
 
 import { useEffect, useState, useMemo } from "react";
 import MediaCard from "@/components/MediaCard";
-import MediaModal from "@/components/MediaModal";
 import { TMDBMedia } from "@/types";
+import { useMediaModal } from "@/contexts/MediaModalContext";
 import { APP_CONFIG } from "@/config";
 
 interface Props {
@@ -25,7 +25,7 @@ export default function SearchResults({
   const [hasMore, setHasMore] = useState<boolean>(initialHasMore);
   const [nextPage, setNextPage] = useState<number>(initialNextPage || 1);
   const [loading, setLoading] = useState(false);
-  const [selectedMedia, setSelectedMedia] = useState<TMDBMedia | null>(null);
+  const { openModal } = useMediaModal();
 
   // Reset internal state when query o initialResults change
   useEffect(() => {
@@ -63,17 +63,16 @@ export default function SearchResults({
           <MediaCard
             key={`${m.media_type}_${m.id}`}
             media={m}
-            onCardClick={setSelectedMedia}
+            onCardClick={openModal}
           />
         ))}
       </div>
     ),
-    [results]
+    [results, openModal]
   );
 
   return (
     <section>
-      <MediaModal media={selectedMedia} onClose={() => setSelectedMedia(null)} />
       {grid}
 
       <div className="mt-6 flex justify-center">

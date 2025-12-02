@@ -71,7 +71,7 @@ export default function SearchBar() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative flex items-center w-full overflow-hidden rounded-lg text-foreground-secondary bg-surface transition-all hover:bg-surface-hover hover:text-foreground focus-within:bg-surface-hover focus-within:text-foreground"
+      className="relative flex items-center w-full overflow-hidden rounded-lg bg-surface transition-all hover:bg-surface-hover focus-within:bg-surface-hover focus-within:text-foreground"
     >
       <button
         type="submit"
@@ -108,7 +108,7 @@ export default function SearchBar() {
           onClick={() => setQuery("")}
           aria-label="Limpiar búsqueda"
           title="Limpiar"
-          className={`${BUTTON_BASE} right-0 text-foreground-secondary hover:text-foreground`}
+          className={`${BUTTON_BASE} right-0`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

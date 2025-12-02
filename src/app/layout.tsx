@@ -4,6 +4,7 @@ import "@/app/globals.css";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { MediaModalProvider } from "@/contexts/MediaModalContext";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
@@ -31,11 +32,13 @@ export default function RootLayout({
     >
       <body className="flex flex-col min-h-dvh overflow-x-hidden bg-canvas text-foreground transition-colors">
         <ThemeProvider>
-          <Header />
-          <main className="flex flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 pt-32 xs:pt-24">
-            {children}
-          </main>
-          <Footer />
+          <MediaModalProvider>
+            <Header />
+            <main className="flex flex-1 w-full md:max-w-11/12 mx-auto pt-32 xs:pt-24">
+              {children}
+            </main>
+            <Footer />
+          </MediaModalProvider>
         </ThemeProvider>
       </body>
     </html>

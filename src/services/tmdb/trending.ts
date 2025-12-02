@@ -1,42 +1,47 @@
-// src/services/tmdb/tmdbMovies.ts
+// src/services/tmdb/trending.ts
 import { fetchFromTMDB } from "./client";
-import { TMDBMultiMedia, TMDBListResponse, TMDBMedia } from "@/types";
+import { TMDBMovie, TMDBTv, TMDBListResponse, TMDBMedia } from "@/types";
 
 /**
- * Devuelve las tendencias del día (solo películas y series), combinando varias páginas.
- * Deduplica por media_type + id y limita a 24 resultados.
- * @param pages Número de páginas a descargar (por defecto 2 para asegurar 24 items únicos).
+ * Obtiene las películas más populares del día según TMDB.
+ * @param limit Número máximo de películas (por defecto 20).
  */
-export const getTrendingAll = async (pages: number = 2) => {
-  const requests = Array.from({ length: pages }, (_, i) =>
-    fetchFromTMDB<TMDBListResponse<TMDBMultiMedia>>(
-      `/trending/all/day?page=${i + 1}`
-    )
+export const getTrendingMovies = async (limit: number = 20) => {
+  const response = await fetchFromTMDB<TMDBListResponse<TMDBMovie>>(
+    `/trending/movie/day?page=1`
   );
 
-  const responses = await Promise.all(requests);
-  const allResults = responses.flatMap((r) => r.results);
-
-  const filteredResults = allResults.filter(
-    (item) => item.media_type === "movie" || item.media_type === "tv"
-  ) as TMDBMedia[];
-
-  // Deduplicar por media_type + id
-  const seen = new Set<string>();
-  const uniqueResults = filteredResults.filter((item) => {
-    const key = `${item.media_type}_${item.id}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-
-  // Limitar a 24 resultados
-  const limitedResults = uniqueResults.slice(0, 24);
+  const validResults = response.results
+    .filter((item) => item.id && item.title && item.poster_path)
+    .slice(0, limit)
+    .map((movie) => ({ ...movie, media_type: "movie" } as TMDBMedia));
 
   return {
     page: 1,
-    results: limitedResults,
+    results: validResults,
     total_pages: 1,
-    total_results: limitedResults.length,
+    total_results: validResults.length,
+  } as TMDBListResponse<TMDBMedia>;
+};
+
+/**
+ * Obtiene las series más populares del día según TMDB.
+ * @param limit Número máximo de series (por defecto 20).
+ */
+export const getTrendingTv = async (limit: number = 20) => {
+  const response = await fetchFromTMDB<TMDBListResponse<TMDBTv>>(
+    `/trending/tv/day?page=1`
+  );
+
+  const validResults = response.results
+    .filter((item) => item.id && item.name && item.poster_path)
+    .slice(0, limit)
+    .map((tv) => ({ ...tv, media_type: "tv" } as TMDBMedia));
+
+  return {
+    page: 1,
+    results: validResults,
+    total_pages: 1,
+    total_results: validResults.length,
   } as TMDBListResponse<TMDBMedia>;
 };

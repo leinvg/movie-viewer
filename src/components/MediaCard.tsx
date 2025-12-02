@@ -1,3 +1,5 @@
+// src/components/MediaCard.tsx
+
 "use client";
 
 import Image from "next/image";
@@ -11,7 +13,6 @@ interface MediaCardProps {
   onCardClick?: (media: TMDBMedia) => void;
 }
 
-/** Tarjeta visual de película o serie - Memoizado para evitar renders innecesarios */
 const MediaCard = memo(function MediaCard({
   media,
   onCardClick,
@@ -33,7 +34,7 @@ const MediaCard = memo(function MediaCard({
   return (
     <div
       onClick={() => onCardClick?.(media)}
-      className="aspect-[2/3] rounded-lg overflow-hidden bg-gray-800 dark:bg-gray-800 relative cursor-pointer hover:shadow-lg hover:shadow-indigo-500/50 transition-shadow"
+      className="aspect-[2/3] rounded-2xl overflow-hidden bg-surface relative cursor-pointer border border-line"
     >
       {img ? (
         <Image
@@ -41,7 +42,7 @@ const MediaCard = memo(function MediaCard({
           alt={title}
           fill
           sizes="(max-width: 640px) 130px, 160px"
-          className="object-cover"
+          className="object-cover hover:opacity-70 transition-opacity"
           loading="lazy"
         />
       ) : (

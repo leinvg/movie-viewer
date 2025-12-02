@@ -11,18 +11,16 @@ interface UseFetchResult<T> {
 /**
  * Generic hook for fetching data from any API endpoint.
  * Handles loading states, errors, and cleanup automatically.
- * 
+ *
  * @param endpoint - API endpoint to fetch from (null to skip fetch)
  * @returns Object with data, loading state, and error
- * 
+ *
  * @example
  * const { data: movie } = useFetchTMDB<TMDBMovie>(
  *   type && id ? `/api/media/${type}/${id}` : null
  * );
  */
-export const useFetchTMDB = <T>(
-  endpoint: string | null
-): UseFetchResult<T> => {
+export const useFetchTMDB = <T>(endpoint: string | null): UseFetchResult<T> => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);

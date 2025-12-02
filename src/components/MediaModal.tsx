@@ -18,14 +18,19 @@ interface MediaModalProps {
 
 export default function MediaModal({ media, onClose }: MediaModalProps) {
   const mediaType = (media?.media_type as "movie" | "tv" | null) || null;
-  
-  // Fetch details and credits using generic hook
+
   const { data: detailedMedia } = useFetchTMDB<TMDBMedia>(
     mediaType && media?.id ? `/api/media/${mediaType}/${media.id}` : null
   );
-  
-  const { data: credits, loading: creditsLoading, error: creditsError } = useFetchTMDB<CreditsResponse>(
-    mediaType && media?.id ? `/api/media/${mediaType}/${media.id}/credits` : null
+
+  const {
+    data: credits,
+    loading: creditsLoading,
+    error: creditsError,
+  } = useFetchTMDB<CreditsResponse>(
+    mediaType && media?.id
+      ? `/api/media/${mediaType}/${media.id}/credits`
+      : null
   );
 
   useEffect(() => {

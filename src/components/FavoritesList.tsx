@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import MediaCard from "@/components/MediaCard";
-import MediaModal from "@/components/MediaModal";
 import { TMDBMedia } from "@/types";
 import useAppStore from "@/store/appStore";
+import { useMediaModal } from "@/contexts/MediaModalContext";
 import { WatchProvidersResponse } from "@/types/watchProviderTypes";
 import {
   aggregateProviders,
@@ -36,7 +36,7 @@ const getServiceTypeBadges = (types: Set<"flatrate" | "rent" | "buy">) => {
 
 export default function FavoritesList() {
   const { favorites, region } = useAppStore();
-  const [selectedMedia, setSelectedMedia] = useState<TMDBMedia | null>(null);
+  const { openModal } = useMediaModal();
   const [providerStats, setProviderStats] = useState<ProviderStat[]>([]);
   const [providersLoading, setProvidersLoading] = useState(false);
 
@@ -106,11 +106,6 @@ export default function FavoritesList() {
 
   return (
     <>
-      <MediaModal
-        media={selectedMedia}
-        onClose={() => setSelectedMedia(null)}
-      />
-
       <div className="mb-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
           Recomendación de plataformas (región: {region})
@@ -334,7 +329,7 @@ export default function FavoritesList() {
           <MediaCard
             key={`${m.media_type}_${m.id}`}
             media={m}
-            onCardClick={setSelectedMedia}
+            onCardClick={openModal}
           />
         ))}
       </div>

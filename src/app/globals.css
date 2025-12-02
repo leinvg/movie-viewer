@@ -7,25 +7,27 @@
 :root {
   --foreground: hsl(20, 9%, 10%);
   --foreground-secondary: hsl(0, 0%, 32%);
+  --foreground-tertiary: hsl(0, 0%, 52%);
 
   --canvas: hsl(0, 0%, 96%);
   --surface: hsl(0, 0%, 86%);
-  --surface-hover: hsl(0, 0%, 86%);
+  --surface-hover: hsl(0, 0%, 82%);
 
   --line: hsl(0, 0%, 83%);
   --line-focus: hsl(0, 0%, 25%);
 }
 
 :root.dark {
-  --foreground: hsl(220, 13%, 89%);
+  --foreground: hsl(220, 5%, 94%);
   --foreground-secondary: hsl(0, 0%, 60%);
+  --foreground-tertiary: hsl(0, 0%, 40%);
 
-  --canvas: hsl(220, 12%, 10%);
-  --surface: hsl(220, 12%, 18%);
-  --surface-hover: hsl(220, 12%, 22%);
+  --canvas: hsl(220, 10%, 10%);
+  --surface: hsl(220, 10%, 20%);
+  --surface-hover: hsl(220, 10%, 28%);
 
-  --line: hsl(220, 12%, 20%);
-  --line-focus: hsl(220, 12%, 80%);
+  --line: hsl(220, 10%, 25%);
+  --line-focus: hsl(220, 10%, 80%);
 }
 
 @theme inline {
@@ -35,6 +37,7 @@
 
   --color-foreground: var(--foreground);
   --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-tertiary: var(--foreground-tertiary);
 
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
